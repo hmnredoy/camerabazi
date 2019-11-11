@@ -1,0 +1,47 @@
+{
+  "name": "tunnelconflux/easy-role",
+  "description": "Implementation of permission base role for Laravel by using spatie/laravel-permission",
+  "authors": [
+    {
+      "name": "Abu Bakar Siddique",
+      "email": "absiddique.live@gmail.com"
+    }
+  ],
+  "keywords": [
+    "laravel",
+    "permission",
+    "tunnelconflux",
+    "authentication",
+    "easy-role",
+    "spatie",
+    "role"
+  ],
+  "license": "MIT",
+  "require": {
+    "spatie/laravel-permission": "^2.37",
+    "laravelcollective/html": "^5.8",
+    "tunnelconflux/dev-crud": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "TunnelConflux\\EasyRole\\": "src/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Spatie\\Permission\\PermissionServiceProvider",
+        "TunnelConflux\\DevCrud\\DevCrudServiceProvider",
+        "TunnelConflux\\EasyRole\\EasyRoleServiceProvider"
+      ]
+    }
+  },
+  "scripts": {
+    "post-autoload-dump": [
+    ],
+    "post-root-package-install": [
+    ],
+    "post-create-project-cmd": [
+    ]
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "name": "tunnelconflux/auto-jwt",
+  "description": "Implementation of JWT for Laravel by using tymon/jwt-auth",
+  "authors": [
+    {
+      "name": "Abu Bakar Siddique",
+      "email": "absiddique.live@gmail.com"
+    }
+  ],
+  "require": {
+    "tymon/jwt-auth": "1.0.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "TunnelConflux\\AutoJWT\\": "src/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "TunnelConflux\\AutoJWT\\JWTServiceProvider",
+        "Tymon\\JWTAuth\\Providers\\LaravelServiceProvider"
+      ]
+    }
+  }
+}

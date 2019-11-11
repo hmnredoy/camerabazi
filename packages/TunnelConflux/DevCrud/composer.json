@@ -1,0 +1,26 @@
+{
+  "name": "tunnelconflux/dev-crud",
+  "description": "Generate CRUD in Laravel",
+  "authors": [
+    {
+      "name": "Abu Bakar Siddique",
+      "email": "absiddique.live@gmail.com"
+    }
+  ],
+  "require": {
+    "intervention/image": "^2.4",
+    "laravelcollective/html": "^5.8"
+  },
+  "autoload": {
+    "psr-4": {
+      "TunnelConflux\\DevCrud\\": "src/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "TunnelConflux\\DevCrud\\DevCrudServiceProvider"
+      ]
+    }
+  }
+}
