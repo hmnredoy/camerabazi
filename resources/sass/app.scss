@@ -1,43 +1,8 @@
 // Fonts
-@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700');
+@import url('https://fonts.googleapis.com/css?family=Nunito');
 
 // Variables
-//@import 'variables';
-
-// Fontawesome
-@import "~@fortawesome/fontawesome-free/css/all.css";
-//@import '~@fortawesome/fontawesome-free/scss/fontawesome.scss';
-//@import '~@fortawesome/fontawesome-free/scss/solid.scss';
-//@import '~@fortawesome/fontawesome-free/scss/brands.scss';
+@import 'variables';
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
-//@import '~bootstrap/dist/css/bootstrap.css';
-
-// Select2
-@import "~select2/dist/css/select2.css";
-
-// AdminLTE
-//@import "~admin-lte/dist/css/adminlte.min.css";
-@import "~admin-lte/build/scss/AdminLTE";
-
-@import "~flatpickr/dist/flatpickr.css";
-
-@import '../css/custom.css';
-
-.router-link-exact-active{
-    background-color: theme-color("info");
-    color: $white !important;
-}
-
-.select2-container--default .select2-selection--multiple .select2-selection__choice {
-    background-color: theme-color("info");
-    border-color: darken(theme-color("info"), 5%);
-    padding: 1px 10px;
-    color: $white;
-}
-
-.select2-container--default .select2-results__option--highlighted[aria-selected] {
-    background-color: theme-color("info");
-    color: $white !important;
-}

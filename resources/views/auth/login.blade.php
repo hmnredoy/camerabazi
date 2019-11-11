@@ -26,7 +26,7 @@
                         {{--<div class="logo-part">
                             <img src="{{url('images/pragati-logo.png')}}" alt="Logo">
                         </div>--}}
-                        <form class="login-form" method="POST" action="{{ route('login') }}">
+                        <form class="login-form" method="POST" action="/login">
                             @csrf
                             <div class="login-form-part">
                                 {{--                                <h1>Welcome to Pragati</h1>--}}
@@ -66,6 +66,14 @@
                                         <strong>{{ $message }}</strong>
                                         </span>
                                     @enderror
+                                </div>
+                                <div class="form-group custom-form-group">
+                                    <div class="col-md-6 offset-md-4">
+                                      <a href="/register?type=freelancer">Looking For Job</a>
+                                    </div>
+                                    <div class="col-md-6 offset-md-4">
+                                        <a href="/register?type=client">Looking For Freelancer</a>
+                                    </div>
                                 </div>
 
                                 <div class="form-group custom-form-group">
