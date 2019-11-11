@@ -1,0 +1,223 @@
+
+.v-details-header .user-block h2 {
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 21px;
+    color: #FFFFFF;
+}
+
+.v-details-header {
+    background: #22B655 !important;
+    border-radius: 0px !important;
+}
+
+.v-attachment-block .v-attachment-img {
+    max-height: 200px;
+    max-width: 260px;
+    min-height: 200px;
+    min-width: 260px;
+}
+
+.v-attachment-block .v-attachment-pushed {
+    margin-left: 360px;
+    margin-top: 20px;
+    width: 600px;
+    display: flex;
+    justify-content: space-between;
+    background: #22B655;
+    padding: 10px 20px;
+}
+
+.v-attachment-block .v-attachment-pushed .v-attachment-heading {
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 21px;
+    align-items: center;
+    color: #FFFFFF;
+}
+
+.v-attachment-block .v-attachment-pushed span {
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 19px;
+    text-align: right;
+    color: #FFFFFF;
+}
+
+.v-row {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.v-row .v-card-header {
+    background: #22B655;
+}
+
+.v-row .v-card-header .v-card-title {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 19px;
+    align-items: center;
+    color: #FFFFFF;
+}
+
+.v-row .v-card-body .v-table thead th {
+    background: #22B655;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 19px;
+    align-items: center;
+    color: #FFFFFF;
+}
+
+.display-place-row {
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 30px;
+}
+
+.display-place-row .display-details {
+    background-color: #fff !important;
+}
+
+.display-place-row .display-details .inner p {
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 15px;
+    color: #2F3749;
+    mix-blend-mode: normal;
+    opacity: 0.8;
+}
+
+.display-place-row .display-details .inner h3 {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 19px;
+    color: #2F3749;
+}
+
+.display-place-row .display-details .icon i {
+    font-size: 40px;
+}
+
+
+.d-place-pic h4 {
+    margin-bottom: 15px;
+}
+
+.display-place-row .d-table-card-body table thead {
+    background: #22B655;
+    color: #fff;
+}
+
+.display-place-row .d-table-card-body .pagination-part {
+    float: right;
+}
+
+
+.v-row .competitor-name {
+    background: #22B655;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    line-height: 19px;
+}
+
+.attachment-block .attachment-pushed {
+    margin-right: 0;
+    float: right;
+}
+
+
+
+/**** REDOY ****/
+
+@media (max-width:1920px){
+    .custom-tmr-attendance-height {
+        max-height: 502px;
+    }
+}
+@media (max-width:1366px){
+
+    .image-cropper {
+        width: 128px;
+        height: 128px;
+        position: relative;
+        overflow: hidden;
+        border-radius: 50%;
+    }
+    .custom-round-img {
+        display: inline;
+        margin: 0 auto;
+        max-height: 128px;
+        width: auto;
+    }
+    .custom-tmr-attendance-height {
+        max-height: 329px;
+    }
+}
+
+
+@media (min-width:1920px) {
+    .custom-table td {
+        min-width: 300px;
+    }
+    .image-cropper {
+        width: 128px;
+        height: 128px;
+        position: relative;
+        overflow: hidden;
+        border-radius: 50%;
+    }
+    .custom-round-img {
+        display: inline;
+        margin: 0 auto;
+        max-height: 128px;
+        width: auto;
+    }
+
+}
+
+.card-custom {
+    -webkit-box-shadow: 0px 0px 7px 1px rgba(107,107,107,0.11);
+    -moz-box-shadow: 0px 0px 7px 1px rgba(107,107,107,0.11);
+    box-shadow: 0px 0px 7px 1px rgba(107,107,107,0.11);
+    border-radius: 8px;
+    background-color: #fff !important;
+}
+
+
+@media (min-width:1350px){
+    .custom-table th {
+        min-width: 150px;
+    }
+}
+
+/*.row {
+    font-family: Roboto, serif;
+    font-style: normal;
+    font-size: 15px;
+    line-height: 19px;
+}*/
+
+#dvPreview
+{
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=image);
+    min-height: 400px;
+    min-width: 400px;
+    display: none;
+}
+
+
+.custom-button .btn {
+    transition: transform .2s;
+    border: 1px #333 solid;
+}
+
+.custom-button .btn:hover {
+    transform: scale(1.1);
+}
