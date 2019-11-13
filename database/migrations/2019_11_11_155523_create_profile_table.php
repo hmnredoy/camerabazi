@@ -21,7 +21,7 @@ class CreateProfileTable extends Migration
             $table->string('profile_image')->nullable();
             $table->integer('bid')->default(0);
             $table->integer('coin')->default(0);
-            $table->string('tool')->nullable();
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }

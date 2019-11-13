@@ -18,7 +18,7 @@ class CreateReviewsTable extends Migration
             $table->bigInteger('posted_by');
             $table->bigInteger('posted_on');
             $table->bigInteger('project_id');
-            $table->float('rate')->default(0);
+            $table->float('rating')->default(0);
             $table->text('comment')->nullable();
             $table->timestamps();
         });

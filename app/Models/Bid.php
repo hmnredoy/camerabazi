@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use TunnelConflux\DevCrud\Models\DevCrudModel;
 
 class Bid extends Model
 {
@@ -11,5 +12,10 @@ class Bid extends Model
     public function attachments()
     {
         return $this->morphMany('App\Models\Attachment', 'attachmentable');
+    }
+
+    public function job()
+    {
+        return $this->belongsTo(Job::class);
     }
 }
