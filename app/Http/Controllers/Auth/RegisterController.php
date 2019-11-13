@@ -51,11 +51,15 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
+
+
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
+            'firstname' => ['required', 'string', 'max:255'],
+            'lastname' => ['required', 'string', 'max:255'],
+            'contact' => 'required',
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'user_id' => ['required']
+            'role' => 'required'
         ]);
     }
 
@@ -72,7 +76,9 @@ class RegisterController extends Controller
 
         $user = User::make([
 
-            'name' => $data['name'],
+            'firstname' => $data['firstname'],
+            'lastname' => $data['lastname'],
+            'contact' => $data['contact'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
@@ -109,6 +115,8 @@ class RegisterController extends Controller
      */
     public function register(Request $request)
     {
+
+
         $this->validator($request->all())->validate();
 
         event(new Registered($user = $this->create($request->all())));
@@ -116,7 +124,32 @@ class RegisterController extends Controller
         $this->guard()->login($user);
 
         return $this->registered($request, $user)
-            ?: redirect($this->redirectPath());
+            ?: redirect($this->redirectPath($user));
     }
 
+    /**
+     * Get the post register / login redirect path.
+     *
+     * @return string
+     */
+    public function redirectPath($user)
+    {
+        if (method_exists($this, 'redirectTo')) {
+            return $this->redirectTo($user);
+        }
+
+        return property_exists($this, 'redirectTo') ? $this->redirectTo : '/home';
+    }
+
+    /**
+     * Get the post register / login redirect path.
+     *
+     * @return string
+     */
+    public function redirectTo($user)
+    {
+       if($user->role->name === 'freelancer'){ return '/freelancer/home'; }
+       if($user->role->name === 'client'){ return '/client/home'; }
+       return '/';
+    }
 }
