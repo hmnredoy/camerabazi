@@ -54,8 +54,8 @@ class RegisterController extends Controller
 
 
         return Validator::make($data, [
-            'firstname' => ['required', 'string', 'max:255'],
-            'lastname' => ['required', 'string', 'max:255'],
+
+            'username' => ['required', 'string', 'unique:users'],
             'contact' => 'required',
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
@@ -76,9 +76,9 @@ class RegisterController extends Controller
 
         $user = User::make([
 
-            'firstname' => $data['firstname'],
-            'lastname' => $data['lastname'],
-            'contact' => $data['contact'],
+
+            'username' => $data['username'],
+            'mobile' => $data['mobile'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
@@ -91,6 +91,7 @@ class RegisterController extends Controller
     /**
      * Show the application registration form.
      *
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
     public function showRegistrationForm(Request $request)
@@ -130,6 +131,7 @@ class RegisterController extends Controller
     /**
      * Get the post register / login redirect path.
      *
+     * @param $user
      * @return string
      */
     public function redirectPath($user)
@@ -144,6 +146,7 @@ class RegisterController extends Controller
     /**
      * Get the post register / login redirect path.
      *
+     * @param $user
      * @return string
      */
     public function redirectTo($user)

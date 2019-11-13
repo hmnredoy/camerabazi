@@ -115,17 +115,12 @@
                             @csrf
                             <div class="row form-group custom-form-group">
                                 <div class="col">
-                                    <input type="text" name="firstname"  value="{{ old('firstname')}}" class="form-control custom-form-control" placeholder="First name">
+                                    <input type="text" name="username"  value="{{ old('username')}}" class="form-control custom-form-control" placeholder="User name">
                                     <div class="invalid-feedback">
                                         Please choose an emailaddress.
                                     </div>
                                 </div>
-                                <div class="col">
-                                    <input type="text"  value="{{ old('lastname') }}" name="lastname" class="form-control custom-form-control" placeholder="Last name">
-                                    <div class="invalid-feedback">
-                                        Please choose an emailaddress.
-                                    </div>
-                                </div>
+
                                 <input type="hidden" value="{{$role->id}}" class="form-check-input" name="role">
                             </div>
 
@@ -137,7 +132,7 @@
                             </div>
 
                             <div class="form-group custom-form-group">
-                                <input type="number" name="contact" value="{{ old('contact') }}" class="form-control custom-form-control" id="contact_number" placeholder="Contact Number">
+                                <input type="number" name="mobile" value="{{ old('mobile') }}" class="form-control custom-form-control" id="contact_number" placeholder="Contact Number">
                                 <div class="invalid-feedback">
                                     Please choose an emailaddress.
                                 </div>
