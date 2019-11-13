@@ -1,0 +1,92 @@
+.login-section {
+  background: #F4F6F9;
+  height: 100vh;
+}
+
+.login-section .login-parts .login-options {
+  margin-top: 9rem;
+}
+
+.login-section .login-parts .login-options .logo-part {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.login-section .login-parts .login-options .login-form .login-form-part {
+  background: #FFFFFF;
+  box-shadow: 0px 3px 7px rgba(67, 117, 151, 0.08);
+  border-radius: 5px;
+  padding-top: 30px;
+  padding-bottom: 50px;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.login-section .login-parts .login-options .login-form .login-form-part h1 {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 30px;
+  line-height: 35px;
+  color: #22B655;
+  text-align: center;
+}
+
+.login-section .login-parts .login-options .login-form .login-form-part p {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 16px;
+  text-align: center;
+  color: #2F3749;
+  margin-bottom: 45px;
+}
+
+.login-section .login-parts .login-options .login-form .login-form-part .custom-form-group label {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 13px;
+  line-height: 15px;
+  color: #2F3749;
+  mix-blend-mode: normal;
+  opacity: 0.8;
+}
+
+.login-section .login-parts .login-options .login-form .login-form-part .custom-form-group .custom-input-group .custom-form-control {
+  border-top: none !important;
+  border-left: none !important;
+  border-right: none !important;
+  border-bottom: 1px solid #E5E5E5;
+  border-radius: 0px !important;
+}
+
+.login-section .login-parts .login-options .login-form .login-form-part .custom-form-group .custom-input-group .input-group-prepend .input-group-text {
+  border-top: none !important;
+  border-left: none !important;
+  border-right: none !important;
+  border-bottom: 1px solid #E5E5E5;
+  border-radius: 0px !important;
+  background: transparent;
+}
+
+.login-section .login-parts .login-options .login-form .login-btn {
+  display: block;
+  margin: 0 auto;
+  width: 100%;
+  background: #22B655;
+  border-radius: 5px;
+  border: none;
+  color: #ffffff;
+  padding: 12px;
+  margin-top: 15px;
+}
+
+.login-section .login-parts .login-options .login-form .login-btn:focus {
+  box-shadow: none;
+}
+
+@media screen and (max-height: 700px) {
+  .login-section .login-parts .login-options {
+    margin-top: 4rem !important;
+  }
+}
+

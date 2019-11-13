@@ -29,10 +29,6 @@
                         <form class="login-form" method="POST" action="{{ route('login') }}">
                             @csrf
                             <div class="login-form-part">
-                                {{--                                <h1>Welcome to Pragati</h1>--}}
-                                <div class="logo-part">
-                                    <img src="{{url('images/pragati-logo.png')}}" alt="Logo">
-                                </div>
                                 <p>Please login to your account.</p>
                                 <div class="form-group custom-form-group">
                                     <label>Email</label>

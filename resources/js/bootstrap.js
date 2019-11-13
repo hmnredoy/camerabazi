@@ -13,8 +13,8 @@ try {
     require('bootstrap');
     require('admin-lte');
     require('select2/dist/js/select2.full');
-    require('flatpickr');
-    require('chart.js');
+ /*   require('flatpickr');
+    require('chart.js');*/
 } catch (e) {}
 
 /**
