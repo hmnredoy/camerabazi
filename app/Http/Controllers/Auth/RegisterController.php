@@ -91,6 +91,7 @@ class RegisterController extends Controller
     /**
      * Show the application registration form.
      *
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
     public function showRegistrationForm(Request $request)
@@ -130,6 +131,7 @@ class RegisterController extends Controller
     /**
      * Get the post register / login redirect path.
      *
+     * @param $user
      * @return string
      */
     public function redirectPath($user)
@@ -144,6 +146,7 @@ class RegisterController extends Controller
     /**
      * Get the post register / login redirect path.
      *
+     * @param $user
      * @return string
      */
     public function redirectTo($user)

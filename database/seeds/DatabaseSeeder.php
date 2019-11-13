@@ -41,5 +41,6 @@ class DatabaseSeeder extends Seeder
 //        $role = Role::create(['name' => 'super-admin']);
 //        $role->givePermissionTo(Permission::all());
         $this->call(RoleSeeder::class);
+        $this->call(TestSeeder::class);
     }
 }

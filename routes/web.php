@@ -1,15 +1,26 @@
 <?php
 
-//use TunnelConflux\DevCrud\Helpers\DevCrudHelper;
+use TunnelConflux\DevCrud\Helpers\DevCrudHelper;
 
 
-
+//Redoy
 Route::get('dashboard', 'DashboardController@index')->name('dashboard.index');
 DevCrudHelper::setRoutes("location", "LocationController");
 DevCrudHelper::setRoutes("skill", "SkillController");
 
 Route::get('profile/edit', 'ProfileController@edit')->name('profile.edit');
 Route::post('profile/edit', 'ProfileController@update')->name('profile.update');
+
+//Route::get('job/{job}/bid', 'BidController@show')->name('bid.show');
+Route::get('job/bid', 'BidController@show')->name('bid.show');
+//Route::post('job/{job}/bid', 'BidController@store')->name('bid.store');
+Route::post('job/{id}/bid', 'BidController@store')->name('bid.store');
+
+Route::get('job/{id}/bids', 'BidController@all')->name('bid.all');
+
+Route::get('job/{id}/bid/delete', 'BidController@delete')->name('bid.delete');
+
+
 
 
 /*Route::namespace("Modules")->middleware('auth')->group(function () {
@@ -34,8 +45,6 @@ Route::get('/jobs','JobController@index');
 Route::get('/jobs/{job}','JobController@show');
 
 //Route::get('/home', 'HomeController@index')->name('home');
-
-Auth::routes();
 
 //Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/client/home', 'ClientController@home');

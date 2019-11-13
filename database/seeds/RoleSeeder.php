@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Role;
 use Illuminate\Database\Seeder;
 
 class RoleSeeder extends Seeder
@@ -11,16 +12,15 @@ class RoleSeeder extends Seeder
      */
     public function run()
     {
-        $freelancer = new \App\Models\Role();
+        $freelancer = new Role();
         $freelancer->name = 'freelancer';
         $freelancer->description='Looking For Job';
         $freelancer->save();
 
-        $client = new \App\Models\Role();
+        $client = new Role();
         $client->name = 'client';
         $client->description = 'Looking For Freelancer';
         $client->save();
-
 
     }
 }
