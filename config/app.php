@@ -165,7 +165,7 @@ return [
         /*
          * Package Service Providers...
          */
-        TunnelConflux\DevCrud\DevCrudServiceProvider::class,
+       // TunnelConflux\DevCrud\DevCrudServiceProvider::class,
         //TunnelConflux\JWT\JWTServiceProvider::class,
         //Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
 

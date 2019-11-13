@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
 use App\Http\Controllers\Controller;
+use App\Models\Role;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -48,10 +51,15 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
+
+
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
+            'firstname' => ['required', 'string', 'max:255'],
+            'lastname' => ['required', 'string', 'max:255'],
+            'contact' => 'required',
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'role' => 'required'
         ]);
     }
 
@@ -63,10 +71,85 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
-            'name' => $data['name'],
+
+        $role = Role::find($data['role']);
+
+        $user = User::make([
+
+            'firstname' => $data['firstname'],
+            'lastname' => $data['lastname'],
+            'contact' => $data['contact'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+
+        $role->users()->save($user);
+
+        return $user;
+    }
+
+    /**
+     * Show the application registration form.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showRegistrationForm(Request $request)
+    {
+        if(!$type = $request->has('type')){
+           return redirect('/login');
+        }
+
+        $type = $request->get('type');
+        $role = Role::where('name',$type)->firstOrFail();
+
+
+
+        return view('auth.register',['role'=> $role]);
+    }
+
+    /**
+     * Handle a registration request for the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function register(Request $request)
+    {
+
+
+        $this->validator($request->all())->validate();
+
+        event(new Registered($user = $this->create($request->all())));
+
+        $this->guard()->login($user);
+
+        return $this->registered($request, $user)
+            ?: redirect($this->redirectPath($user));
+    }
+
+    /**
+     * Get the post register / login redirect path.
+     *
+     * @return string
+     */
+    public function redirectPath($user)
+    {
+        if (method_exists($this, 'redirectTo')) {
+            return $this->redirectTo($user);
+        }
+
+        return property_exists($this, 'redirectTo') ? $this->redirectTo : '/home';
+    }
+
+    /**
+     * Get the post register / login redirect path.
+     *
+     * @return string
+     */
+    public function redirectTo($user)
+    {
+       if($user->role->name === 'freelancer'){ return '/freelancer/home'; }
+       if($user->role->name === 'client'){ return '/client/home'; }
+       return '/';
     }
 }
