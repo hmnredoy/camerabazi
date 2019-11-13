@@ -1,6 +1,6 @@
 <?php
 
-//use TunnelConflux\DevCrud\Helpers\DevCrudHelper;
+use TunnelConflux\DevCrud\Helpers\DevCrudHelper;
 
 
 
@@ -31,11 +31,13 @@ Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('login', 'Auth\LoginController@login');
 Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 Route::get('/jobs','JobController@index');
+Route::post('/jobs','JobController@store');
+Route::get('/jobs/create','JobController@create');
 Route::get('/jobs/{job}','JobController@show');
 
 //Route::get('/home', 'HomeController@index')->name('home');
 
-Auth::routes();
+
 
 //Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/client/home', 'ClientController@home');

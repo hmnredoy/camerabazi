@@ -10,9 +10,7 @@ $factory->define(Job::class, function (Faker $faker) {
         'location_id' =>  function(){
         return factory(\App\Models\Location::class)->create()->id;
         } ,
-        'category_id' =>  function(){
-            return factory(\App\Models\Category::class)->create()->id;
-        } ,
+
         'user_id' =>  function(){
             return factory(\App\Models\User::class)->create()->id;
         } ,

@@ -22,5 +22,11 @@ class RoleSeeder extends Seeder
         $client->save();
 
 
+        $admin = new \App\Models\Role();
+        $admin->name = 'admin';
+        $admin->description = 'Super Admin';
+        $admin->save();
+
+
     }
 }

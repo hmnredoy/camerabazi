@@ -22,22 +22,30 @@ class JobTest extends TestCase
         $client = factory(User::class)->create(['role_id'=>$clientRole->id]);
         $this->actingAs($client);
 
-        $category = factory(Category::class)->create();
+        $category1 = factory(Category::class)->create();
+        $category2 = factory(Category::class)->create();
         $location = factory(Location::class)->create();
 
 
         $data = [
             'location_id'=> $location->id,
-            'category_id' => $category->id,
             'title' => "Tenetur natus vero tenetur adipisci velit.",
             'description' => "Qui placeat aut rem et ut quod possimus. Velit modi voluptatem harum velit repellat consectetur. Et et voluptatum iure animi. Quaerat quis id veritatis sit ut pariatur eius.",
             'budget'=> 2300,
-            'expire' => '2019-12-12 12:59:04'
+            'expire' => '2019-12-12 12:59:04',
+            'categories' => [
+                 $category1->id,
+                $category2->id,
+            ]
+
             ];
 
         $this->post('/jobs',$data);
 
-        $this->assertDatabaseHas('jobs',$data);
+        $this->assertDatabaseHas('jobs',['title' => 'Tenetur natus vero tenetur adipisci velit.']);
+
+        $this->assertDatabaseHas('jobs',['title' => 'Tenetur natus vero tenetur adipisci velit.']);
+
 
 
     }

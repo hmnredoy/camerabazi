@@ -93,6 +93,20 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                @foreach($jobs as $job)
+                    <h2>{{$job->title}} </h2>
+                    {{ $job->expire->diffForHumans(null, true) }}
+                    <ul>
+                        @foreach($job->categories as $cat)
+                        <li>
+                        {{$cat->name}}
+                        </li>
+                        @endforeach
+                    </ul>
+                @endforeach
+            </div>
+            {{ $jobs->links() }}
         </div>
     </div>
 </section>
