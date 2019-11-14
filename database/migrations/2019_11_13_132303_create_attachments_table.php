@@ -17,11 +17,12 @@ class CreateAttachmentsTable extends Migration
             $table->bigIncrements('id');
             $table->string('url');
             $table->string('file_size');
-            $table->integer('attachmentable_id');
+            $table->unsignedBigInteger('attachmentable_id');
             $table->string('attachmentable_type');
+            $table->tinyInteger('status')->default(1);
             /*$table->foreign('model_id')
-                ->references('bids')
-                ->on('id')
+                ->references('id')
+                ->on('bids')
                 ->onDelete('cascade');*/
         });
     }

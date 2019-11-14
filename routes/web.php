@@ -8,6 +8,7 @@ Route::get('dashboard', 'DashboardController@index')->name('dashboard.index');
 DevCrudHelper::setRoutes("location", "LocationController");
 DevCrudHelper::setRoutes("skill", "SkillController");
 
+Route::get('profile', 'ProfileController@show')->name('profile.show');
 Route::get('profile/edit', 'ProfileController@edit')->name('profile.edit');
 Route::post('profile/edit', 'ProfileController@update')->name('profile.update');
 
@@ -19,6 +20,15 @@ Route::post('job/{id}/bid', 'BidController@store')->name('bid.store');
 Route::get('job/{id}/bids', 'BidController@all')->name('bid.all');
 
 Route::get('job/{id}/bid/delete', 'BidController@delete')->name('bid.delete');
+
+Route::post('profile/edit/experience', 'ExperienceController@companyStore')->name('experience.store');
+
+
+Route::get('job/review', 'ReviewController@show')->name('review.show');
+Route::post('job/review', 'ReviewController@store')->name('review.store');
+//Route::post('profile/edit/experience', 'ExperienceController@educationStore')->name('education.store');
+//DevCrudHelper::setRoutes("experience", "ExperienceController");
+
 
 
 

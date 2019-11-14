@@ -14,8 +14,18 @@ class CreateUserLocationTable extends Migration
     public function up()
     {
         Schema::create('user_location', function (Blueprint $table) {
-            $table->integer('user_id');
-            $table->integer('location_id');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('location_id');
+
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
+
+            $table->foreign('location_id')
+                ->references('id')
+                ->on('locations')
+                ->onDelete('cascade');
         });
     }
 

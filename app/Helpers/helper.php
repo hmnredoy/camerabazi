@@ -3,6 +3,7 @@
 use App\Models\Attachment;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 function store($file) {
     $fileOriginalName = $file->getClientOriginalName();
@@ -49,4 +50,43 @@ function deleteWithAttachments($model_object) {
         return true;
     }
     return false;
+}
+
+/*
+ * $args[0] = $rules []
+ * $args[1] = $messages []
+ * $args[2] = $ignore []
+*/
+
+//function validateRequest($model, $request, $rules = [], $messages = [], $ignore = null){
+function validateRequest($model, $request, ...$args){
+
+//    dd(func_num_args(), $args);
+
+    $fields = $model->getFillable();
+    $validate = [];
+    foreach ($fields as $field){
+        $validateThis = [
+            $field => 'required'
+        ];
+        $validate = array_merge($validate, $validateThis);
+    }
+
+    if(isset($args[0])){
+        if(is_array($args[0])){
+            $validate = array_merge($validate, $args[0]);
+        }
+    }
+
+    if(isset($args[2])){
+        if(is_array($args[2])){
+            foreach ($args[2] as $item){
+                unset($validate[$item]);
+            }
+        } else{
+            unset($validate[$args[2]]);
+        }
+    }
+
+    Validator::make($request->all(), $validate, $args[1] ?? [])->validate();
 }

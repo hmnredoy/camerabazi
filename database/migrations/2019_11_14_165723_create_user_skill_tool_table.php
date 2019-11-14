@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateExperiencesTable extends Migration
+class CreateUserSkillToolTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,20 +13,18 @@ class CreateExperiencesTable extends Migration
      */
     public function up()
     {
-        Schema::create('experiences', function (Blueprint $table) {
-            $table->bigIncrements('id');
+        Schema::create('user_skill_tool', function (Blueprint $table) {
             $table->unsignedBigInteger('user_id');
-            $table->string('institute');
-            $table->string('title_or_country')->nullable();
-            $table->date('started_at')->nullable();
-            $table->date('ended_at')->nullable();
-            $table->text('description')->nullable();
-            $table->tinyInteger('type');
-            $table->timestamps();
+            $table->unsignedBigInteger('skill_tool_id');
 
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users')
+                ->onDelete('cascade');
+
+            $table->foreign('skill_tool_id')
+                ->references('id')
+                ->on('skill_tools')
                 ->onDelete('cascade');
         });
     }
@@ -38,6 +36,6 @@ class CreateExperiencesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('experiences');
+        Schema::dropIfExists('user_skill_tool');
     }
 }

@@ -20,6 +20,7 @@ class CreateBidsTable extends Migration
             $table->double('amount');
             $table->string('delivery_days');
             $table->text('description');
+            $table->tinyInteger('status')->default(1);
             $table->timestamps();
 
             $table->foreign('job_id')->references('id')->on('jobs')->onDelete('cascade');
