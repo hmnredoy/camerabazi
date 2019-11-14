@@ -17,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','roll_id','firstname','lastname','contact'
+        'name', 'email', 'password','roll_id','username','mobile','status'
     ];
 
     /**
@@ -53,6 +53,13 @@ class User extends Authenticatable
     {
         return $this->hasMany(Job::class);
     }
+
+    public function profile()
+    {
+        return $this->hasOne(Profile::class);
+    }
+
+
 
 
 }

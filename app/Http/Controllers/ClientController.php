@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Job;
 use Illuminate\Http\Request;
 
 class ClientController extends Controller
@@ -17,6 +18,18 @@ class ClientController extends Controller
         $this->middleware('auth');
 
 
+    }
+
+    public function myJobs()
+    {
+        $jobs = auth()->user()->jobs;
+        return view('client.myjobs',['jobs'=>$jobs]);
+    }
+
+    public function jobProposal(Job $job)
+    {
+        $proposal = $job->bids;
+        dd($proposal);
     }
 
 

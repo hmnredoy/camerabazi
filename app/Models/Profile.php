@@ -15,4 +15,9 @@ class Profile extends Model
     public function skills(){
         return $this->belongsToMany(Skill::class, 'user_skill', 'user_id', 'skill_id');
     }
+
+    public function user()
+    {
+        return $this->hasOne(User::class);
+    }
 }

@@ -34,7 +34,7 @@
                                     <label>Email</label>
                                     <div class="input-group custom-input-group">
                                         {{--                                            <input type="text" class="form-control custom-form-control" id="user_name">--}}
-                                        <input id="email" type="email" class="form-control custom-form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                                        <input id="email" type="text" class="form-control custom-form-control" name="username" value="{{ old('username') }}" required autocomplete="username" autofocus>
                                     </div>
 
                                     @error('email')
@@ -93,9 +93,19 @@
                     </div>
                 </div>
             </div>
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
             <div class="row">
                 @foreach($jobs as $job)
                     <h2>{{$job->title}} </h2>
+                    <a href="{{$job->path()}}/bid">Bid Now</a>
                     {{ $job->expire->diffForHumans(null, true) }}
                     <ul>
                         @foreach($job->categories as $cat)

@@ -12,4 +12,10 @@ class Bid extends Model
     {
         return $this->morphMany('App\Models\Attachment', 'attachmentable');
     }
+
+
+    public function job()
+    {
+        return $this->belongsTo(Job::class);
+    }
 }

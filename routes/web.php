@@ -13,9 +13,8 @@ Route::get('profile/edit', 'ProfileController@edit')->name('profile.edit');
 Route::post('profile/edit', 'ProfileController@update')->name('profile.update');
 
 //Route::get('job/{job}/bid', 'BidController@show')->name('bid.show');
-Route::get('job/bid', 'BidController@show')->name('bid.show');
-//Route::post('job/{job}/bid', 'BidController@store')->name('bid.store');
-Route::post('job/{id}/bid', 'BidController@store')->name('bid.store');
+Route::get('jobs/{job}/bid', 'BidController@show')->name('bid.show');
+Route::post('jobs/{job}/bid', 'BidController@store')->name('bid.store');
 
 Route::get('job/{id}/bids', 'BidController@all')->name('bid.all');
 
@@ -52,5 +51,7 @@ Route::get('/jobs/{job}','JobController@show');
 
 //Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/client/home', 'ClientController@home');
+Route::get('/client/jobs', 'ClientController@myJobs');
+Route::get('/client/jobs/{job}/proposals', 'ClientController@jobProposal');
 Route::get('/freelancer/home', 'FreelancerController@home');
 

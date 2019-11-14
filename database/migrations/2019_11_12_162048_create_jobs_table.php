@@ -21,6 +21,7 @@ class CreateJobsTable extends Migration
             $table->dateTime('expire');
             $table->double('budget');
             $table->text('description');
+            $table->string('status')->default('submitted');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

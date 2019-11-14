@@ -18,18 +18,18 @@ class AccountTest extends TestCase
 
         $freelancer = $this->createFreelancerRole();
 
-        $this->post('/register',[
-            "firstname" => "Rodion",
-            'lastname' => 'Rakib',
-            'contact' => '01539542041',
+        $response = $this->post('/register',[
+
+            'username' => 'Rakib',
+            'mobile' => '01539542041',
             "email" => "freelancer@gmail.com",
             "role" => $freelancer->id,
             "password" => "freelancer@gmail.com",
             "password_confirmation" => "freelancer@gmail.com"
         ]);
 
-        $this->assertDatabaseHas('users',['firstname'=>'Rodion','contact' => '01539542041','role_id'=>$freelancer->id]);
-
+        $this->assertDatabaseHas('users',['username'=>'Rakib','mobile' => '01539542041','role_id'=>$freelancer->id]);
+        $response->assertRedirect('/freelancer/home');
     }
 
     /** @test */
@@ -37,44 +37,46 @@ class AccountTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $client = $this->createFreelancerRole();
+        $client = $this->createClientRole();
 
-        $this->post('/register',[
-            "firstname" => "Rodion",
-            'lastname' => 'Rakib',
-            'contact' => '01539542041',
+        $response = $this->post('/register',[
+
+            'username' => 'rakib',
+            'mobile' => '01539542041',
             "email" => "freelancer@gmail.com",
             "role" => $client->id,
             "password" => "freelancer@gmail.com",
             "password_confirmation" => "freelancer@gmail.com"
         ]);
 
-        $this->assertDatabaseHas('users',['firstname'=>'Rodion','role_id'=>$client->id]);
+        $this->assertDatabaseHas('users',['username'=>'rakib','role_id'=>$client->id]);
+        $response->assertRedirect('/client/home');
+
 
     }
 
+
+
     /** @test */
-    public function client_can_visit_his_homepage()
+    public function registered_user_must_have_a_profile()
     {
         $this->withoutExceptionHandling();
 
 
-        $client = $this->createClientRole();
+        $freelancer = $this->createFreelancerRole();
 
         $response = $this->post('/register',[
-            "firstname" => "Rodion",
-            'lastname' => 'Rakib',
-            'contact' => '01539542041',
+            'id'  => 1,
+            'username' => 'rakib',
+            'mobile' => '01539542041',
             "email" => "client@gmail.com",
-            "role" => $client->id,
+            "role" => $freelancer->id,
             "password" => "freelancer@gmail.com",
             "password_confirmation" => "freelancer@gmail.com"
         ]);
 
-       $response->assertRedirect('/client/home');
-
+        $this->assertDatabaseHas('profile',['user_id'=>1]);
     }
-
 
 
 

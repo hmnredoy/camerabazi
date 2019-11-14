@@ -13,7 +13,7 @@
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form role="form" method="POST" action="{{route('bid.store', 1)}}" enctype="multipart/form-data">
+                    <form role="form" method="POST" action="{{route('bid.store',$job->id)}}" enctype="multipart/form-data">
                         @csrf
                         <div class="card-body">
                             <div class="form-group">
@@ -22,7 +22,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Delivery Days</label>
-                                <input type="number" class="form-control" name="days">
+                                <input  type="number" class="form-control" name="delivery_days">
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputPassword1">Description</label>

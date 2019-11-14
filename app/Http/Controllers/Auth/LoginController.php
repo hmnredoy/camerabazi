@@ -82,6 +82,23 @@ class LoginController extends Controller
 
 
     /**
+     * Send the response after the user was authenticated.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    protected function sendLoginResponse(Request $request)
+    {
+        $request->session()->regenerate();
+
+        $this->clearLoginAttempts($request);
+
+        return $this->authenticated($request, $user = $this->guard()->user())
+            ?: redirect()->intended($this->redirectPath($user));
+    }
+
+
+    /**
      * Show the application's login form.
      *
      * @return \Illuminate\Http\Response
@@ -91,4 +108,59 @@ class LoginController extends Controller
         $jobs = Job::paginate(2);
         return view('auth.login',['jobs'=>$jobs]);
     }
+
+    /**
+     * Validate the user login request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return void
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    protected function validateLogin(Request $request)
+    {
+        $request->validate([
+            $this->username() => 'required|string',
+            'password' => 'required|string',
+        ]);
+    }
+
+    /**
+     * Get the login username to be used by the controller.
+     *
+     * @return string
+     */
+    public function username()
+    {
+        return 'username';
+    }
+
+    /**
+     * Get the post register / login redirect path.
+     *
+     * @param $user
+     * @return string
+     */
+    public function redirectPath($user)
+    {
+        if (method_exists($this, 'redirectTo')) {
+            return $this->redirectTo($user);
+        }
+
+        return property_exists($this, 'redirectTo') ? $this->redirectTo : '/home';
+    }
+
+    /**
+     * Get the post register / login redirect path.
+     *
+     * @param $user
+     * @return string
+     */
+    public function redirectTo($user)
+    {
+        if($user->role->name === 'freelancer'){ return '/freelancer/home'; }
+        if($user->role->name === 'client'){ return '/client/home'; }
+        return '/';
+    }
+
 }

@@ -22,6 +22,8 @@ class CreateBidsTable extends Migration
             $table->text('description');
             $table->timestamps();
 
+            $table->unique(['job_id','freelancer_id']);
+
             $table->foreign('job_id')->references('id')->on('jobs')->onDelete('cascade');
             $table->foreign('freelancer_id')->references('id')->on('users')->onDelete('cascade');
         });

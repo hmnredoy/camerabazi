@@ -32,5 +32,20 @@ class Job extends Model
         $this->categories()->save($category);
     }
 
+    public function bidders()
+    {
+        return $this->hasMany(Bid::class,'job_id');
+    }
+
+    public function bids()
+    {
+        return $this->hasMany(Bid::class);
+    }
+
+    public function addBid($bid)
+    {
+        $this->bids()->save($bid);
+    }
+
 
 }

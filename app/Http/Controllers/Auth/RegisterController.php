@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Models\Profile;
 use App\Models\User;
 use App\Http\Controllers\Controller;
 use App\Models\Role;
@@ -53,10 +54,12 @@ class RegisterController extends Controller
     {
 
 
+
+
         return Validator::make($data, [
 
             'username' => ['required', 'string', 'unique:users'],
-            'contact' => 'required',
+            'mobile' => 'required',
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'role' => 'required'
@@ -74,8 +77,9 @@ class RegisterController extends Controller
 
         $role = Role::find($data['role']);
 
-        $user = User::make([
 
+
+        $user = User::make([
 
             'username' => $data['username'],
             'mobile' => $data['mobile'],
@@ -83,7 +87,13 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
         ]);
 
+
+
         $role->users()->save($user);
+
+
+
+
 
         return $user;
     }

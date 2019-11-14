@@ -2,7 +2,9 @@
 
 namespace Tests\Feature;
 
+use App\Models\Bid;
 use App\Models\Category;
+use App\Models\Job;
 use App\Models\Location;
 use App\Models\User;
 use Tests\TestCase;
@@ -44,7 +46,33 @@ class JobTest extends TestCase
 
         $this->assertDatabaseHas('jobs',['title' => 'Tenetur natus vero tenetur adipisci velit.']);
 
-        $this->assertDatabaseHas('jobs',['title' => 'Tenetur natus vero tenetur adipisci velit.']);
+
+
+
+
+
+    }
+
+    /** @test */
+    public function freelancer_can_bid_to_a_job()
+    {
+        $job = factory(Job::class)->create();
+
+        $freelancerRole = $this->createFreelancerRole();
+        $freelancer1 = factory(User::class)->create(['role_id'=>$freelancerRole->id]);
+        $freelancer2 = factory(User::class)->create(['role_id'=>$freelancerRole->id]);
+
+
+        $bid1 = factory(Bid::class)->create(['freelancer_id'=>$freelancer1->id,'job_id'=>$job->id]);
+
+        $bid2 = factory(Bid::class)->create(['freelancer_id'=>$freelancer2->id,'job_id'=>$job->id]);
+
+
+        $job->addBid($bid1);
+        $job->addBid($bid2);
+
+
+        $this->assertCount(2,$job->bids);
 
 
 

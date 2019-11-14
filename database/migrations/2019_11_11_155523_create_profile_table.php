@@ -23,6 +23,8 @@ class CreateProfileTable extends Migration
             $table->integer('coin')->default(0);
             $table->string('tool')->nullable();
             $table->timestamps();
+
+
         });
     }
 
