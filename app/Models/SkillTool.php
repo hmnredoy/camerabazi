@@ -5,9 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use TunnelConflux\DevCrud\Models\DevCrudModel;
 
-class Skill extends DevCrudModel
+class SkillTool extends DevCrudModel
 {
-    protected $table = 'skills';
-
-    protected $fillable = ['skill'];
+    protected $fillable = ['title','type','status'];
 }

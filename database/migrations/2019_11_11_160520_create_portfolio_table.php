@@ -15,10 +15,17 @@ class CreatePortfolioTable extends Migration
     {
         Schema::create('portfolio', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('user_id');
+            $table->unsignedBigInteger('user_id');
             $table->string('image')->nullable();
-            $table->text('caption')->nullable();
+            $table->string('title')->nullable();
+            $table->text('summary')->nullable();
+            $table->tinyInteger('status')->default(1);
             $table->timestamps();
+
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
         });
     }
 

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUserLocationTable extends Migration
+class CreateExperiencesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,18 +13,20 @@ class CreateUserLocationTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_location', function (Blueprint $table) {
+        Schema::create('experiences', function (Blueprint $table) {
+            $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('location_id');
+            $table->string('institute');
+            $table->string('title_or_country')->nullable();
+            $table->date('started_at')->nullable();
+            $table->date('ended_at')->nullable();
+            $table->text('description')->nullable();
+            $table->tinyInteger('type');
+            $table->timestamps();
 
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users')
-                ->onDelete('cascade');
-
-            $table->foreign('location_id')
-                ->references('id')
-                ->on('locations')
                 ->onDelete('cascade');
         });
     }
@@ -36,6 +38,6 @@ class CreateUserLocationTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_location');
+        Schema::dropIfExists('experiences');
     }
 }

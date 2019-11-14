@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUserLocationTable extends Migration
+class CreateUserSkillToolTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,18 +13,18 @@ class CreateUserLocationTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_location', function (Blueprint $table) {
+        Schema::create('user_skill_tool', function (Blueprint $table) {
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('location_id');
+            $table->unsignedBigInteger('skill_tool_id');
 
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users')
                 ->onDelete('cascade');
 
-            $table->foreign('location_id')
+            $table->foreign('skill_tool_id')
                 ->references('id')
-                ->on('locations')
+                ->on('skill_tools')
                 ->onDelete('cascade');
         });
     }
@@ -36,6 +36,6 @@ class CreateUserLocationTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_location');
+        Schema::dropIfExists('user_skill_tool');
     }
 }

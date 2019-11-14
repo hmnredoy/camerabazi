@@ -15,12 +15,23 @@ class CreateReviewsTable extends Migration
     {
         Schema::create('reviews', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('posted_by');
-            $table->bigInteger('posted_on');
-            $table->bigInteger('project_id');
-            $table->float('rate')->default(0);
+            $table->unsignedBigInteger('posted_by');
+            $table->unsignedBigInteger('posted_on');
+            $table->unsignedBigInteger('project_id');
+            $table->float('rating')->default(0);
             $table->text('comment')->nullable();
+            $table->tinyInteger('status')->default(1);
             $table->timestamps();
+            $table->softDeletes();
+
+            $table->foreign('posted_on')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
+
+            $table->foreign('posted_by')
+                ->references('id')
+                ->on('users');
         });
     }
 

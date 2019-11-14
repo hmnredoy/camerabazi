@@ -1,6 +1,8 @@
 <!-- Styles -->
 <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
+@include('vendor.dev-crud.partials.action_notification')
+
 <section class="content">
     <div class="container-fluid">
         <div class="row d-flex justify-content-center">
@@ -62,15 +64,86 @@
                         </div>
                         <!-- /.card-body -->
                         <div class="card-footer">
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" class="btn btn-success">Submit</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.card -->
+
+                <!-- general form elements -->
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Experience</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <form role="form" method="POST" action="{{route('experience.store')}}">
+                        @csrf
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label>Designation</label>
+                                <input type="text" class="form-control" name="title_or_country">
+                            </div>
+                            <div class="form-group">
+                                <label>Company</label>
+                                <input type="text" class="form-control" name="institute">
+                            </div>
+                            <div class="form-group">
+                                <label>Start Date</label>
+                                <input type="date" class="form-control" name="started_at">
+                            </div>
+                            <div class="form-group">
+                                <label>End Date</label>
+                                <input type="date" class="form-control" name="ended_at">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">Description</label>
+                                <textarea class="form-control" rows="3" name="description"></textarea>
+                            </div>
+                            <input type="hidden" name="type" value="{{\App\Models\Enums\ExperienceTypes::company}}">
+                        </div>
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-success">Save</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Education</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <form role="form" method="POST" action="{{route('experience.store')}}">
+                        @csrf
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label>Institute</label>
+                                <input type="text" class="form-control" name="institute">
+                            </div>
+                            <div class="form-group">
+                                <label>Start Date</label>
+                                <input type="date" class="form-control" name="started_at">
+                            </div>
+                            <div class="form-group">
+                                <label>End Date</label>
+                                <input type="date" class="form-control" name="ended_at">
+                            </div>
+                            <div class="form-group">
+                                <label>Country</label>
+                                <input type="text" class="form-control" name="title_or_country">
+                            </div>
+                            <input type="hidden" name="type" value="{{\App\Models\Enums\ExperienceTypes::education}}">
+                        </div>
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-success">Save</button>
                         </div>
                     </form>
                 </div>
                 <!-- /.card -->
             </div>
         </div>
-        <!-- /.row -->
-    </div><!-- /.container-fluid -->
+    </div>
 </section>
 
 <script src="{{asset('js/app.js')}}"></script>
