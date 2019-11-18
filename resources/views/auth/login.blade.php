@@ -31,17 +31,19 @@
                             <div class="login-form-part">
                                 <p>Please login to your account.</p>
                                 <div class="form-group custom-form-group">
-                                    <label>Email</label>
+                                    <label>Email Or Mobile</label>
                                     <div class="input-group custom-input-group">
                                         {{--                                            <input type="text" class="form-control custom-form-control" id="user_name">--}}
-                                        <input id="email" type="text" class="form-control custom-form-control" name="username" value="{{ old('username') }}" required autocomplete="username" autofocus>
+                                        <input id="login" type="text"
+                                               class="form-control"
+                                               name="login" value="{{ old('email') ?: old('mobile') }}" required autofocus>
+                                        @if ($errors->has('email') || $errors->has('mobile'))
+                                            <span class="invalid-feedback">
+                                        <strong>{{ $errors->first('email') ?: $errors->first('mobile') }}</strong>
+                                        </span>
+                                        @endif
                                     </div>
 
-                                    @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
                                 </div>
 
                                 <div class="form-group custom-form-group">

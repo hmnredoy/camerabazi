@@ -56,7 +56,7 @@ public function can_see_post_job_link()
 
         $this->post('/jobs',$data);
 
-        $this->get('/client/home/jobs')->assertSee('Tenetur natus vero tenetur adipisci velit.');
+        $this->get('/client/jobs')->assertSee('Tenetur natus vero tenetur adipisci velit.');
 
     }
 }

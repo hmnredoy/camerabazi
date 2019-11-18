@@ -31,4 +31,15 @@ abstract class TestCase extends BaseTestCase
 
 
     }
+
+    public function createStarterPackage()
+    {
+        $starter = new \App\Models\Package();
+        $starter->title = 'Starter Package';
+        $starter->bid_per_month = 15;
+        $starter->coin_per_month=20;
+        $starter->save();
+
+        return $starter;
+    }
 }

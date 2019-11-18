@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -17,6 +19,7 @@ class AccountTest extends TestCase
         $this->withoutExceptionHandling();
 
         $freelancer = $this->createFreelancerRole();
+        $this->createStarterPackage();
 
         $response = $this->post('/register',[
 
@@ -64,7 +67,7 @@ class AccountTest extends TestCase
 
 
         $freelancer = $this->createFreelancerRole();
-
+        $this->createStarterPackage();
         $response = $this->post('/register',[
             'id'  => 1,
             'username' => 'rakib',
@@ -78,10 +81,35 @@ class AccountTest extends TestCase
         $this->assertDatabaseHas('profile',['user_id'=>1]);
     }
 
+    /** @test */
+    public function password_can_be_changed()
+    {
+
+        $this->withoutExceptionHandling();
+
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
 
 
+        dump($user);
+
+        $token = app('auth.password.broker')->createToken($user);
+
+        $response = $this->post('password/reset',[
+            'token' => $token,
+            'email' => $user->email,
+            'password' => '12345678',
+            "password_confirmation" => "12345678"
+        ]);
+
+        dd($response);
 
 
+        dd($user->refresh());
+
+        // $2y$10$5g4bNdmiQUMBxd6KgNem1O3EqblqI9.VMbf.5mQhg2j.n7K.FeEJm
+
+    }
 
 
 

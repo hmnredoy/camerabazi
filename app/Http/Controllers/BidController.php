@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Attachment;
 use App\Models\Bid;
+use App\Models\Enums\JobStatus;
 use App\Models\Job;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -70,5 +71,35 @@ class BidController extends Controller
 
         deleteWithAttachments($bid);
     }
+
+    public function approved(Job $job,Bid $bid)
+    {
+
+        $job->markAccepted($bid);
+        $job->status = JobStatus::ongoing;
+        $job->save();
+        return back();
+    }
+
+
+    public function cancel(Job $job,Bid $bid)
+    {
+        $job->markCanceled($bid);
+        $job->status = JobStatus::cancelled;
+        $job->save();
+        return back();
+    }
+
+    public function succeeded(Job $job,Bid $bid)
+    {
+
+        $job->status = JobStatus::succeeded;
+        $job->save();
+        return back();
+    }
+
+
+
+
 
 }
