@@ -6,8 +6,10 @@ namespace App\Models;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
+use TunnelConflux\DevCrud\Models\DevCrudModel;
 
-class User extends Authenticatable
+class User extends AppModel
 {
     use Notifiable;
 
@@ -17,7 +19,11 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','roll_id','username','mobile','status'
+        'username', 'email', 'password','role_id','mobile','status'
+    ];
+
+    protected $listColumns = [
+      'username', 'email', 'mobile', 'status'
     ];
 
     /**
@@ -36,7 +42,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'role_id' => 'int'
+        'role_id' => 'int',
     ];
 
     public function role()
@@ -59,7 +65,25 @@ class User extends Authenticatable
         return $this->hasOne(Profile::class);
     }
 
+    public function skillTools(){
+        return $this->belongsToMany(SkillTool::class, 'user_skill_tool', 'user_id', 'skill_tool_id');
+    }
 
+    public function locations(){
+        return $this->belongsToMany(Location::class, 'user_location', 'user_id', 'location_id');
+    }
 
+    public function getRatingAttribute(){
+        return Review::where('posted_on', $this->id)
+                ->avg('rating')
+            ? number_format(
+                Review::where('posted_on', $this->id)
+                ->avg('rating'), 2)
+            : 'N\A';
+    }
+
+    public function membership(){
+        return $this->hasMany(MembershipPurchase::class, 'freelancer_id', 'id');
+    }
 
 }

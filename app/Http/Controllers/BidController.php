@@ -4,47 +4,46 @@ namespace App\Http\Controllers;
 
 use App\Models\Attachment;
 use App\Models\Bid;
+use App\Models\MembershipPurchase;
 use App\Models\Job;
+use App\Repositories\MembershipPurchaseRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class BidController extends Controller
 {
+    protected $membership;
+
+    public function __construct(MembershipPurchaseRepository $membership)
+    {
+        $this->membership = $membership;
+    }
+
     public function show(Job $job) {
 
         return view('frontend.freelancer.bid',['job'=>$job]);
     }
     public function store(Request $request, Job $job) {
 
+        $bid = new Bid();
+        $freelancerId = auth()->id();
 
-        $request->validate([
-            'amount' => 'required',
-            'delivery_days' => 'required',
+        $request->request->add(['freelancer_id' => $freelancerId, 'job_id' => $job->id]);
 
-        ]);
+        validateRequest($bid, $request,
+            ['job_id' => 'unique:bids'],
+            ['job_id.unique' => 'You have already submitted a bid.']
+        );
+
+        $membershipData = $this->membership->useMembershipData($freelancerId, 'bids',1);
+
+        if($membershipData['LastData'] < 1){
+            return back()->with('error', "You don't have enough bids. Please <a href=".route('membership.show').">purchase</a> bids.");
+        }
+
         $input = $request->all();
-
-        $bid = new Bid($input);
-        $bid->freelancer_id = auth()->id();
-
-        $job->bids()->save($bid);
-
-
-
-//        $bid = Bid::create([
-//            'amount' => $input['amount'],
-//            'delivery_days' => $input['days'],
-//            'description' => $input['description'],
-////            'job_id' => $job->id,
-//            'job_id' => $job_id,
-////            'freelancer_id' => Auth::id(),
-//            'freelancer_id' => 1,
-//        ]);
-//
-//        if(!$bid || $bid == null){
-//            return back()->with('error', 'Bid could not be created!');
-//        }
+        $bid = $bid->create($input);
 
         if(isset($input['files'])) {
             foreach ($input['files'] as $file) {

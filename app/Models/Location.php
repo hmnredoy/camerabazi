@@ -7,6 +7,5 @@ use TunnelConflux\DevCrud\Models\DevCrudModel;
 
 class Location extends DevCrudModel
 {
-    protected $table = 'locations';
-    protected $fillable = ['location'];
+    protected $fillable = ['title', 'status'];
 }

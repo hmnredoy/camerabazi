@@ -72,7 +72,7 @@ class JobController extends Controller
 
         $categories = $request->get('categories');
 
-        $job->categories()->attach([1,2]);
+        $job->categories()->attach($categories);
 
 
 

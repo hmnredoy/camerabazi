@@ -17,4 +17,7 @@ class Bid extends Model
     {
         return $this->belongsTo(Job::class);
     }
+    public function freelancer(){
+        return $this->hasOne(User::class, 'id', 'freelancer_id');
+    }
 }

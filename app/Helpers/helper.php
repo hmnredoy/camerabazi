@@ -90,3 +90,24 @@ function validateRequest($model, $request, ...$args){
 
     Validator::make($request->all(), $validate, $args[1] ?? [])->validate();
 }
+
+function error($message = 'Failed!', $route = null, $id = null) {
+    if($route != null) {
+        if($id == null) {
+            return redirect()->route($route)->with('error',$message);
+        }
+        return redirect()->route($route, $id)->with('error',$message);
+    }
+    return back()->with('error',$message);
+}
+
+function success($message = 'Success!', $route = null, $id = null) {
+    if($route != null) {
+
+        if($id == null) {
+            return redirect()->route($route)->with('success',$message);
+        }
+        return redirect()->route($route, $id)->with('success',$message);
+    }
+    return back()->with('success',$message);
+}

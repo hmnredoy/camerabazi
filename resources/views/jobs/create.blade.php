@@ -3,7 +3,9 @@
 @section('content')
 
 
-
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row d-flex justify-content-center">
     <form method="post" action="/jobs">
         @csrf
         <div class="form-group">
@@ -33,7 +35,7 @@
             <label for="exampleFormControlSelect2">Location</label>
             <select name="location_id"  class="form-control" id="exampleFormControlSelect2">
                 @foreach($locations as $location)
-                    <option value="{{$location->id}}" >{{$location->location}}</option>
+                    <option value="{{$location->id}}" >{{$location->title}}</option>
                 @endforeach
 
 
@@ -54,6 +56,9 @@
             </ul>
         </div>
     @endif
+            </div>
+        </div>
+    </section>
 
 @endsection
 

@@ -14,7 +14,7 @@ use ReflectionClass;
 
 abstract class Enum
 {
-    private static function data(): array
+    static function data(): array
     {
         return (new ReflectionClass(get_called_class()))->getConstants();
     }

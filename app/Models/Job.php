@@ -7,7 +7,9 @@ use Illuminate\Support\Facades\Schema;
 
 class Job extends Model
 {
-    protected $guarded=[];
+    protected $fillable = ['amount', 'delivery_days', 'description'];
+
+//    protected $guarded=[];
 
     protected $dates=['expire'];
 
@@ -17,7 +19,7 @@ class Job extends Model
         return '/jobs/'.$this->id;
     }
 
-    public function owner()
+    public function client()
     {
         return $this->belongsTo(User::class,'user_id');
     }

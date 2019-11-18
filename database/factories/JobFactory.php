@@ -17,6 +17,7 @@ $factory->define(Job::class, function (Faker $faker) {
         'title' => $faker->sentence,
         'description' => $faker->paragraph,
         'expire' => $faker->dateTimeBetween(now(),'1 month'),
+        'status' => $faker->numberBetween(1,4),
         'budget' => $faker->randomFloat()
 
     ];

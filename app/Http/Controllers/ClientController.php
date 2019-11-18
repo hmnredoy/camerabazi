@@ -26,10 +26,20 @@ class ClientController extends Controller
         return view('client.myjobs',['jobs'=>$jobs]);
     }
 
-    public function jobProposal(Job $job)
+    public function jobBid(Job $job)
     {
-        $proposal = $job->bids;
-        dd($proposal);
+        $bids = $job->bids;
+
+/*        $subset = $bids->map(function ($bid) {
+            return collect($bid)
+                ->all();
+        });*/
+
+       // dd($bids);
+
+        foreach ($bids as $bid){
+            dd($bid, $bid->attachments, $bid->freelancer, $bid->freelancer->rating);
+        }
     }
 
 

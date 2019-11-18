@@ -7,6 +7,7 @@ use Faker\Generator as Faker;
 
 $factory->define(Location::class, function (Faker $faker) {
     return [
-        'location' => $faker->word,
+        'title' => $faker->word,
+        'status' => $faker->numberBetween(0,1),
     ];
 });

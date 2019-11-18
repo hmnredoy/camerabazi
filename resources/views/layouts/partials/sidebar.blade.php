@@ -28,15 +28,27 @@
                 </a>
             </li>
             <li class="nav-item has-treeview">
+                <a href="{{ route('user.index') }}" class="nav-link {{ Route::is('user.*') ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-copy"></i>
+                    <p>Users</p>
+                </a>
+            </li>
+            <li class="nav-item has-treeview">
                 <a href="{{ route('location.index') }}" class="nav-link {{ Route::is('location.*') ? 'active' : '' }}">
                     <i class="nav-icon fas fa-copy"></i>
                     <p>Locations</p>
                 </a>
             </li>
             <li class="nav-item has-treeview">
-                <a href="{{ route('skill.index') }}" class="nav-link {{ Route::is('skill.*') ? 'active' : '' }}">
+                <a href="{{ route('skill_tool.index') }}" class="nav-link {{ Route::is('skill_tool.*') ? 'active' : '' }}">
                     <i class="nav-icon fas fa-copy"></i>
-                    <p>Skills</p>
+                    <p>Skills & Tools</p>
+                </a>
+            </li>
+            <li class="nav-item has-treeview">
+                <a href="{{ route('membership-plan.index') }}" class="nav-link {{ Route::is('membership-plan.*') ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-copy"></i>
+                    <p>Membership Plans</p>
                 </a>
             </li>
         </ul>

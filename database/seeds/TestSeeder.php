@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Enums\ExperienceTypes;
+use App\Models\Enums\JobStatus;
 use App\Models\Enums\SkillToolTypes;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -14,7 +15,8 @@ class TestSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('jobs')->delete();
+        DB::table('membership_plans')->delete();
+        /*DB::table('jobs')->delete();
         DB::table('locations')->delete();
         DB::table('categories')->delete();
         DB::table('users')->delete();
@@ -44,6 +46,7 @@ class TestSeeder extends Seeder
             [
                 'id' => 1,
                 'title' => 'Dhaka',
+                'status' => 1,
                 'created_at' => '2019-09-07 12:55:11',
                 'updated_at' => '2019-09-07 12:55:11',
             ],
@@ -62,12 +65,12 @@ class TestSeeder extends Seeder
             [
                 'id' => 1,
                 'location_id' => 1,
-                'category_id' => 1,
                 'user_id' => 1,
                 'title' => 'Photographer needed',
                 'expire' => '2020-02-07 12:55:11',
                 'budget' => '5000',
                 'description' => 'A good photographer needed',
+                'status' => JobStatus::submitted,
                 'created_at' => '2019-09-07 12:55:11',
                 'updated_at' => '2019-09-07 12:55:11',
             ],
@@ -182,8 +185,59 @@ class TestSeeder extends Seeder
                 'created_at' => '2019-09-07 12:55:11',
                 'updated_at' => '2019-09-07 12:55:11',
             ],
-        ]);
+        ]);*/
 
+        DB::table('membership_plans')->insert([
+            [
+                'id' => 1,
+                'title' => 'Starter Package',
+                'amount' => 1500,
+                'bids' => 15,
+                'skills' => 30,
+                'coins' => 20,
+                'expire_days' => 30,
+                'order_index' => 1,
+                'status' => 1,
+                'created_at' => '2019-09-07 12:55:11',
+                'updated_at' => '2019-09-07 12:55:11',
+            ],[
+                'id' => 2,
+                'title' => 'Basic Package',
+                'amount' => 1700,
+                'bids' => 20,
+                'skills' => 35,
+                'coins' => 25,
+                'expire_days' => 30,
+                'order_index' => 2,
+                'status' => 1,
+                'created_at' => '2019-09-07 12:55:11',
+                'updated_at' => '2019-09-07 12:55:11',
+            ],[
+                'id' => 3,
+                'title' => 'Economy Package',
+                'amount' => 1900,
+                'bids' => 25,
+                'skills' => 40,
+                'coins' => 30,
+                'expire_days' => 30,
+                'order_index' => 3,
+                'status' => 1,
+                'created_at' => '2019-09-07 12:55:11',
+                'updated_at' => '2019-09-07 12:55:11',
+            ],[
+                'id' => 4,
+                'title' => 'Premium Package',
+                'amount' => 2200,
+                'bids' => 30,
+                'skills' => 45,
+                'coins' => 35,
+                'expire_days' => 30,
+                'order_index' => 4,
+                'status' => 1,
+                'created_at' => '2019-09-07 12:55:11',
+                'updated_at' => '2019-09-07 12:55:11',
+            ],
+        ]);
 
     }
 }
