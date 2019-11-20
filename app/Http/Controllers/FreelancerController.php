@@ -2,14 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Job;
 use Illuminate\Http\Request;
 
 class FreelancerController extends Controller
 {
-    public function home()
+    public function home(Request $request)
     {
-        $jobs = Job::all();
+
+
+
+
         return view('freelancer.home',['jobs'=>$jobs]);
     }
 
@@ -30,6 +34,18 @@ class FreelancerController extends Controller
     {
         $ongoingeBids = auth()->user()->getOngoingBids();
         return  view('freelancer.ongoing-jobs',['bids'=> $ongoingeBids]);
+    }
+
+    public function getJobs($request)
+    {
+        $jobs = null;
+
+        if($request->has('location')){
+            $locationId = $request->get('location');
+            $jobs = \DB::table('jobs')->where('location_id','=',$locationId);
+        }
+        return $jobs->get();
+
     }
 
 

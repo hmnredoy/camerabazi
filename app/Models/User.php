@@ -148,6 +148,24 @@ class User extends Authenticatable
         return $jobs;
     }
 
+    // belows are client related methods
+
+    public function getOngoingJobs()
+    {
+        $ongoingJobs  = new Collection();
+
+        $this->jobs->each(function($job) use ($ongoingJobs) {
+
+            if(!(\Carbon\Carbon::now()->greaterThan($job->expire))  && $job->status != JobStatus::blocked){
+                    $ongoingJobs->push($job);
+            }
+        });
+
+        
+
+        return $ongoingJobs;
+    }
+
 
 
 

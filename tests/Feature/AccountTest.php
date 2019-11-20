@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -88,26 +89,23 @@ class AccountTest extends TestCase
         $this->withoutExceptionHandling();
 
         $user = factory(User::class)->create();
+
+
         $this->actingAs($user);
 
 
-        dump($user);
 
         $token = app('auth.password.broker')->createToken($user);
 
-        $response = $this->post('password/reset',[
-            'token' => $token,
-            'email' => $user->email,
+        $response = $this->post('profile/change-password',[
+            'old_password' => '123456',
             'password' => '12345678',
             "password_confirmation" => "12345678"
         ]);
 
+
+
         dd($response);
-
-
-        dd($user->refresh());
-
-        // $2y$10$5g4bNdmiQUMBxd6KgNem1O3EqblqI9.VMbf.5mQhg2j.n7K.FeEJm
 
     }
 

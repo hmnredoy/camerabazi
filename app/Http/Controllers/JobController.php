@@ -17,7 +17,7 @@ class JobController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+       // $this->middleware('auth');
 
 
     }
@@ -129,5 +129,34 @@ class JobController extends Controller
     public function destroy(Job $job)
     {
         //
+    }
+
+    public function search(Request $request)
+    {
+
+
+        $jobs = $this->getJobs($request);
+        return view('jobs.search',['jobs'=>$jobs]);
+    }
+
+    public function getJobs($request)
+    {
+
+        $query = Job::limit(10);
+
+        if($request->has('location')){
+            $location= $request->get('location');
+            $query->where('location_id','=',$location);
+        }
+
+
+
+
+
+
+        dd($query->get());
+
+        return $query->get();
+
     }
 }

@@ -10,6 +10,7 @@ use App\Models\Profile;
 use App\Models\SkillTool;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use ReflectionClass;
 
 class ProfileController extends Controller
@@ -73,6 +74,36 @@ class ProfileController extends Controller
 
     }
 
+
+    public function showchangePassword()
+    {
+        return view('freelancer.change-password');
+    }
+    public function changePassword(Request $request)
+    {
+
+        $user = auth()->user();
+
+        $request->validate([
+                'old_password' => 'required',
+                'password' => 'required|min:6|confirmed',
+            ]
+        );
+
+        $data = $request->all();
+
+
+        if (!Hash::check($data['old_password'], $user->password)) {
+            return back()->with('error', 'The specified password does not match the database password');
+        } else {
+            // write code to update password
+
+            $user->update([
+                'password' => $request->password,
+            ]);
+            return redirect('profile/change-password');
+        }
+    }
 
 
 

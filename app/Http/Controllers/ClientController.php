@@ -32,6 +32,12 @@ class ClientController extends Controller
         dd($proposal);
     }
 
+    public function ongoingJobs()
+    {
+        $jobs = auth()->user()->getOngoingJobs();
+        return view('client.ongoing-jobs',['jobs'=>$jobs]);
+    }
+
 
 
     public function home()

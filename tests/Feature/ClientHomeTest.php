@@ -3,8 +3,11 @@
 namespace Tests\Feature;
 
 use App\Models\Category;
+use App\Models\Enums\JobStatus;
+use App\Models\Job;
 use App\Models\Location;
 use App\Models\User;
+use Carbon\Carbon;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -34,29 +37,82 @@ public function can_see_post_job_link()
 
         $clientRole = $this->createClientRole();
         $client = factory(User::class)->create(['role_id'=>$clientRole->id]);
+
+        $job1 = factory(Job::class)->create(['user_id'=>$client->id]);
+        $job2 = factory(Job::class)->create(['user_id'=>$client->id]);
+        $job3 = factory(Job::class)->create(['user_id'=>$client->id]);
+
         $this->actingAs($client);
 
-        $category1 = factory(Category::class)->create();
-        $category2 = factory(Category::class)->create();
-        $location = factory(Location::class)->create();
+        $this->get('/client/jobs')->assertSee($job1->title);
+        $this->get('/client/jobs')->assertSee($job2->title);
 
 
-        $data = [
-            'location_id'=> $location->id,
-            'title' => "Tenetur natus vero tenetur adipisci velit.",
-            'description' => "Qui placeat aut rem et ut quod possimus. Velit modi voluptatem harum velit repellat consectetur. Et et voluptatum iure animi. Quaerat quis id veritatis sit ut pariatur eius.",
-            'budget'=> 2300,
-            'expire' => '2019-12-12 12:59:04',
-            'categories' => [
-                $category1->id,
-                $category2->id,
-            ]
 
-        ];
+    }
 
-        $this->post('/jobs',$data);
 
-        $this->get('/client/jobs')->assertSee('Tenetur natus vero tenetur adipisci velit.');
+    /** @test */
+    public function can_see_ongoing_posted_job()
+    {
+        $this->withoutExceptionHandling();
+
+        $clientRole = $this->createClientRole();
+        $client = factory(User::class)->create(['role_id'=>$clientRole->id]);
+
+        $job1 = factory(Job::class)->create(['user_id'=>$client->id]);
+        $job2 = factory(Job::class)->create(['user_id'=>$client->id]);
+
+
+        $yesterday = Carbon::yesterday();
+        $alsoY2K = Carbon::create(1999, 12, 31, 24);
+
+
+        $jobexpired = factory(Job::class)->create(['user_id'=>$client->id,'expire'=>$yesterday]);
+        $jobexpired2 = factory(Job::class)->create(['user_id'=>$client->id,'expire'=>$alsoY2K]);
+
+
+        $this->actingAs($client);
+
+        $this->get('/client/ongoing-jobs')->assertSee($job1->title);
+        $this->get('/client/ongoing-jobs')->assertSee($job2->title);
+        $this->get('/client/ongoing-jobs')->assertDontSee($jobexpired->title);
+        $this->get('/client/ongoing-jobs')->assertDontSee($jobexpired2->title);
+
+
+
+
+
+    }
+
+    /** @test */
+    public function cant_see_blocked_post()
+    {
+        $this->withoutExceptionHandling();
+
+        $clientRole = $this->createClientRole();
+        $client = factory(User::class)->create(['role_id'=>$clientRole->id]);
+
+        $job1 = factory(Job::class)->create(['user_id'=>$client->id]);
+        $job2 = factory(Job::class)->create(['user_id'=>$client->id]);
+        $job3 = factory(Job::class)->create(['user_id'=>$client->id]);
+
+        $job3->status = JobStatus::blocked;
+        $job3->save();
+
+
+
+
+
+        $this->actingAs($client);
+
+        $this->get('/client/ongoing-jobs')->assertSee($job1->title);
+        $this->get('/client/ongoing-jobs')->assertSee($job2->title);
+        $this->get('/client/ongoing-jobs')->assertDontSee($job3->title);
+//
+
+
+
 
     }
 }

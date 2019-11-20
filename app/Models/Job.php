@@ -12,6 +12,8 @@ class Job extends Model
 
     protected $dates=['expire'];
 
+    protected $withCount=['bids'];
+
 
     public function path()
     {

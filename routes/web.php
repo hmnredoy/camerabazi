@@ -12,6 +12,8 @@ DevCrudHelper::setRoutes("skill", "SkillToolController");
 Route::get('profile', 'ProfileController@show')->name('profile.show');
 Route::get('profile/edit', 'ProfileController@edit')->name('profile.edit');
 Route::post('profile/edit', 'ProfileController@update')->name('profile.update');
+Route::post('profile/change-password', 'ProfileController@changePassword')->name('profile.changePassword');
+Route::get('profile/change-password', 'ProfileController@showchangePassword');
 
 //Route::get('job/{job}/bid', 'BidController@show')->name('bid.show');
 Route::get('jobs/{job}/bid', 'BidController@show')->name('bid.show');
@@ -57,12 +59,14 @@ Route::get('/jobs','JobController@index');
 Route::post('/jobs','JobController@store');
 Route::get('/jobs/create','JobController@create');
 Route::get('/jobs/{job}','JobController@show');
+Route::get('/search/','JobController@search');
 
 //Route::get('/home', 'HomeController@index')->name('home');
 
 
 //Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/client/home', 'ClientController@home');
+Route::get('/client/ongoing-jobs', 'ClientController@ongoingJobs');
 Route::get('/client/jobs', 'ClientController@myJobs');
 Route::get('/client/jobs/{job}/proposals', 'ClientController@jobProposal');
 Route::get('/freelancer/home', 'FreelancerController@home');
