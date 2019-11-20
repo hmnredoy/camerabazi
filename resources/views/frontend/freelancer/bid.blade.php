@@ -1,9 +1,9 @@
 @extends('layouts.main')
 
 @section('content')
-<section class="content">
-    <div class="container-fluid">
-        <div class="row">
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row d-flex justify-content-center">
             <!-- left column -->
             <div class="col-md-6">
                 <!-- general form elements -->
@@ -13,7 +13,7 @@
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form role="form" method="POST" action="{{route('bid.store',$job->id)}}" enctype="multipart/form-data">
+                    <form role="form" method="POST" action="{{route('bid.store',$job->slug)}}" enctype="multipart/form-data">
                         @csrf
                         <div class="card-body">
                             <div class="form-group">

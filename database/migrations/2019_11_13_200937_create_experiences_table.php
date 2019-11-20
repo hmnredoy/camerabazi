@@ -20,6 +20,7 @@ class CreateExperiencesTable extends Migration
             $table->string('title_or_country')->nullable();
             $table->date('started_at')->nullable();
             $table->date('ended_at')->nullable();
+            $table->boolean('currently_working')->default(false);
             $table->text('description')->nullable();
             $table->tinyInteger('type');
             $table->timestamps();

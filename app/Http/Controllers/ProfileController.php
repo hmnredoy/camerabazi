@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Helper\CustomHelper;
 use App\Http\Controllers\Helper\HelperController;
 use App\Models\Enums\ExperienceTypes;
 use App\Models\Enums\SkillToolTypes;
 use App\Models\Location;
 use App\Models\Profile;
+use App\Models\Rating;
+use App\Models\Review;
 use App\Models\SkillTool;
 use App\Models\User;
 use App\Repositories\MembershipPurchaseRepository;
@@ -16,33 +19,33 @@ use ReflectionClass;
 
 class ProfileController extends Controller
 {
-    protected $userId;
+    public $user;
     protected $membership;
 
     public function __construct(MembershipPurchaseRepository $membership)
     {
-        /*if(Auth::check()){ //Uncomment after integrating Auth
-            $this->middleware(function ($request, $next) {
-                $this->userId = Auth::id();
-                return $next($request);
-            });
-        }*/
+        $this->middleware(function ($request, $next) {
+            $this->user = Auth::user();
+            return $next($request);
+        });
         $this->membership = $membership;
-
-        $this->userId = 1;
     }
 
-    public function edit(User $user)
+    public function edit()
     {
-
+        $user = $this->user;
         $memberBids = $this->membership->getSum($user, 'bids');
         $memberSkills = $this->membership->getSum($user, 'skills');
         $memberCoins = $this->membership->getSum($user, 'coins');
         $amountSpent = $this->membership->getSum($user, 'amount');
 
+        $reviews = $user->reviews()->get();
+        $rating = $user->ratings()->avg('rating');
+
         $purchaseHistory = $this->membership->getAllData($user);
 
         $membershipData = [
+            'rating' => number_format($rating, 2),
             'memberBids' => $memberBids,
             'memberSkills' => $memberSkills,
             'memberCoins' => $memberCoins,
@@ -50,27 +53,43 @@ class ProfileController extends Controller
             'purchaseHistory' => $purchaseHistory
         ];
 
+
         $locations = Location::all();
         $skills = SkillTool::all();
-        return view('frontend.profile', compact('locations', 'skills', 'user', 'membershipData'));
+        return view('frontend.profile', compact('locations', 'skills', 'user', 'membershipData', 'reviews'));
     }
 
-    public function update(User $user, Request $request)
+    public function update(Request $request)
     {
         $inputs = $request->all();
 
-        if (Location::where('id', $inputs['location'])->exists()) {
+        $data = [
+            'gender' => $inputs['gender'],
+        ];
+
+        if (@Location::where('id', $inputs['location'])->exists()) {
             $location = $inputs['location'];
-            $user->locations()->attach($location);
+            $this->user->locations()->sync($location);
         }
-        if (SkillTool::where('id', $inputs['skills'])->exists()) {
+        if (@SkillTool::where('id', $inputs['skills'])->exists()) {
             $skills = $inputs['skills'];
-            $synced = $user->skillTools()->sync($skills);
-            $membershipData = $this->membership->useMembershipData($user, 'skills', count($synced['attached']));
+            $synced = $this->user->skillTools()->sync($skills);
+            $membershipData = $this->membership->useMembershipData($this->user, 'skills', count($synced['attached']));
             if($membershipData['LastData'] < 1){
                 return back()->with('error', "Insufficient skill points. Please <a href=".route('membership.show').">purchase</a> skills.");
             }
         }
+
+        if(isset($inputs['profile_image'])){
+            $image = CustomHelper::store($request->file('profile_image'));
+            $data = array_merge($data, ['profile_image' => $image->name]);
+        }if(isset($inputs['cover_image'])){
+            $image = CustomHelper::store($request->file('cover_image'));
+            $data = array_merge($data, ['cover_image' => $image->name]);
+        }
+
+
+        $request->user()->profile()->update($data);
 
         return success();
     }

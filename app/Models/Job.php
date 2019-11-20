@@ -4,19 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Str;
 
 class Job extends Model
 {
-    protected $fillable = ['amount', 'delivery_days', 'description'];
+   // protected $fillable = ['amount', 'delivery_days', 'description', 'location_id'];
 
-//    protected $guarded=[];
+    protected $guarded=[];
 
     protected $dates=['expire'];
 
-
     public function path()
     {
-        return '/jobs/'.$this->id;
+        return '/jobs/'.$this->slug;
     }
 
     public function client()
@@ -48,6 +48,5 @@ class Job extends Model
     {
         $this->bids()->save($bid);
     }
-
 
 }

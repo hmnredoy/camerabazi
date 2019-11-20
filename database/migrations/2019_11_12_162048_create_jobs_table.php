@@ -17,6 +17,7 @@ class CreateJobsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('location_id');
             $table->unsignedBigInteger('user_id');
+            $table->string('slug')->unique();
             $table->string('title');
             $table->dateTime('expire');
             $table->double('budget');

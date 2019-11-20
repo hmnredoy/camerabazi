@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Enums\ExperienceTypes;
 use App\Models\Experience;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use TunnelConflux\DevCrud\Requests\SaveFormRequest;
@@ -11,25 +12,45 @@ use TunnelConflux\DevCrud\Requests\SaveFormRequest;
 class ExperienceController extends Controller
 {
     public function store(Request $request){
-        $model = new Experience;
-
-//        $data['user_id'] = Auth::id() ?? 1;
-        $request->request->add(['user_id' => Auth::id() ?? 1]);
+        $experience = new Experience;
+        $user = auth()->user();
+        $request->request->add(['user_id' => Auth::id() ?? $user->id]);
         $data = $request->all();
+        $ignore = ['currently_working', 'description'];
+        $exclude = [];
 
+        if(isset($data['currently_working'])){
+            $data['currently_working'] = true;
+            array_push($ignore, 'ended_at');
+            $exclude = ['ended_at'];
+        }
+        else{
+            if($data['started_at'] > $data['ended_at']){
+                return error('Starting date cannot be older than ending date.');
+            }
+        }
         if($data['type'] == ExperienceTypes::education){
-            $ignore = [
-              'description'
-            ];
-            validateRequest($model, $request, null, null, $ignore);//use validateRequest($model, $request) if only fillables are required
+            validateRequest($experience, $request, null,
+                [
+                    'ended_at.not_in' => 'Ended at is invalid if you currently study here.',
+                    'title_or_country.required' => 'Country is required.',
+                ]
+                , $ignore, $exclude);//use validateRequest($model, $request) if only fillables are required
         }
-
         if($data['type'] == ExperienceTypes::company) {
-            validateRequest($model, $request);
+            validateRequest($experience, $request,null,
+                [
+                    'ended_at.not_in' => 'Ended at is invalid if you currently work here.',
+                    'title_or_country.required' => 'Title is required.',
+                    'institute.required' => 'Company field is required.'
+                ], $ignore, $exclude);
         }
 
-        Experience::create($data);
+        $res = $experience->create($data);
 
-        return back()->with('success', 'Success!');
+        if($res){
+            return success();
+        }
+        return error();
     }
 }

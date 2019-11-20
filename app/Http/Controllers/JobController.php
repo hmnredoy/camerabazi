@@ -6,6 +6,8 @@ use App\Models\Category;
 use App\Models\Job;
 use App\Models\Location;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use TunnelConflux\DevCrud\Helpers\DevCrudHelper;
 
 class JobController extends Controller
 {
@@ -52,8 +54,6 @@ class JobController extends Controller
      */
     public function store(Request $request)
     {
-
-
         // validation
         $data = $request->validate([
             'title' => ['required', 'string', 'max:255'],
@@ -61,28 +61,21 @@ class JobController extends Controller
             'budget' => ['required','numeric'],
             'description' => '',
             'location_id'=> 'required',
-
-
         ]);
+
+        $job = new Job();
 
         $data['user_id'] = auth()->id();
 
+        $data['slug'] = DevCrudHelper::makeSlug($job, $request->input('title'));
 
-        $job = Job::create($data);
+        $job = $job->create($data);
 
         $categories = $request->get('categories');
 
         $job->categories()->attach($categories);
 
-
-
-
-
-        //dd($categories);
-
-
         return redirect($job->path());
-
 
     }
 
@@ -130,4 +123,7 @@ class JobController extends Controller
     {
         //
     }
+
+
+
 }

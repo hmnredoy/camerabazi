@@ -8,10 +8,12 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
 use TunnelConflux\DevCrud\Models\DevCrudModel;
+use Cmgmyr\Messenger\Traits\Messagable;
 
 class User extends AppModel
 {
     use Notifiable;
+    use Messagable;
 
     /**
      * The attributes that are mass assignable.
@@ -62,7 +64,7 @@ class User extends AppModel
 
     public function profile()
     {
-        return $this->hasOne(Profile::class);
+        return $this->hasOne(Profile::class, 'user_id')->first() ?? null;
     }
 
     public function skillTools(){
@@ -72,6 +74,11 @@ class User extends AppModel
     public function locations(){
         return $this->belongsToMany(Location::class, 'user_location', 'user_id', 'location_id');
     }
+
+    public function location(){
+        return $this->hasOneThrough(Location::class, UserLocation::class, 'user_id', 'id', 'id', 'location_id')->first() ?? null;
+    }
+
 
     public function getRatingAttribute(){
         return Review::where('posted_on', $this->id)
@@ -84,6 +91,14 @@ class User extends AppModel
 
     public function membership(){
         return $this->hasMany(MembershipPurchase::class, 'freelancer_id', 'id');
+    }
+
+    public function ratings() {
+        return $this->hasMany(Rating::class, 'user_id');
+    }
+
+    public function reviews() {
+        return $this->hasMany(Review::class, 'posted_on');
     }
 
 }

@@ -6,8 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class ClientOffer extends Model
 {
-//    protected $fillable = ['amount', 'delivery_days', 'message'];
-
     protected $guarded = [];
 
     public function bid(){

@@ -1,9 +1,11 @@
 <?php
 
 use App\Models\Attachment;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 function store($file) {
     $fileOriginalName = $file->getClientOriginalName();
@@ -56,16 +58,35 @@ function deleteWithAttachments($model_object) {
  * $args[0] = $rules []
  * $args[1] = $messages []
  * $args[2] = $ignore []
+ * $args[3] = $exclude []
 */
 
-//function validateRequest($model, $request, $rules = [], $messages = [], $ignore = null){
 function validateRequest($model, $request, ...$args){
 
-//    dd(func_num_args(), $args);
-
+/*    dd(func_num_args(), $args);
     $fields = $model->getFillable();
+    $table_name = strtolower(str_plural(class_basename($model)));*/
+
+    $unsetItems = [
+      'id', 'created_at', 'updated_at'
+    ];
+
+    $columns = $model
+        ->getConnection()
+        ->getSchemaBuilder()
+        ->getColumnListing($model->getTable());
+
+    foreach ($unsetItems as $unsetItem){
+        if(array_search($unsetItem, $columns) !== false){
+            $key = array_search($unsetItem, $columns);
+            unset($columns[$key]);
+        }
+    }
+
     $validate = [];
-    foreach ($fields as $field){
+    $inputs = $request->all();
+
+    foreach ($columns as $field){
         $validateThis = [
             $field => 'required'
         ];
@@ -85,6 +106,16 @@ function validateRequest($model, $request, ...$args){
             }
         } else{
             unset($validate[$args[2]]);
+        }
+    }
+
+    if(isset($args[3])){
+        if(is_array($args[3]) && !empty($args[3])){
+            foreach ($args[3] as $item){
+                if($inputs[$item] != null){
+                    $validate = array_merge($validate, [$item => [Rule::notIn([$inputs[$item]]),]]);
+                }
+            }
         }
     }
 

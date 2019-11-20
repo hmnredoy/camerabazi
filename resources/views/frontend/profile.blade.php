@@ -7,14 +7,25 @@
 <section class="content">
     <div class="container-fluid">
         <div class="row d-flex justify-content-center">
-
             <!-- left column -->
             <div class="col-md-8">
                 <table>
                     <tr>
-                        <td>Bids Remaining : {{$membershipData['memberBids']}} |</td>
-                        <td>Skills Remaining : {{$membershipData['memberSkills']}} |</td>
-                        <td>Coins Remaining : {{$membershipData['memberCoins']}} |</td>
+                        <td>Name : {{$user->username}}</td>
+                    </tr>
+                    <tr>
+                        <td>Rating : {{$membershipData['rating']}}</td>
+                    </tr>
+                    <tr>
+                        <td>Bids Remaining : {{$membershipData['memberBids']}}</td>
+                    </tr>
+                    <tr>
+                        <td>Skills Remaining : {{$membershipData['memberSkills']}}</td>
+                    </tr>
+                    <tr>
+                        <td>Coins Remaining : {{$membershipData['memberCoins']}}</td>
+                    </tr>
+                    <tr>
                         <td>Amount Spent : {{$membershipData['amountSpent']}}</td>
                     </tr>
                 </table>
@@ -25,21 +36,23 @@
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form role="form" method="POST" action="{{route('profile.update', $user->id)}}" enctype="multipart/form-data">
+                    <form role="form" method="POST" action="{{route('profile.update')}}" enctype="multipart/form-data">
                         @csrf
+                        @method('PATCH')
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="gender">Gender</label>
                                 <select class="form-control" id="gender" name="gender">
-                                    <option value="male">Male</option>
-                                    <option value="female">Female</option>
+                                    <option value="male" {{ auth()->user()->profile()->gender == 'male' ? 'selected' : ''}}>Male</option>
+                                    <option value="female" {{ auth()->user()->profile()->gender == 'female' ? 'selected' : ''}}>Female</option>
                                 </select>
                             </div>
+
                             <div class="form-group">
                                 <label for="location">Location</label>
                                 <select class="form-control" id="location" name="location">
                                     @foreach($locations as $item)
-                                    <option value="{{$item->id}}">{{$item->title}}</option>
+                                    <option value="{{$item->id}}" {{ auth()->user()->location()->id == $item->id ? 'selected' : '' }}>{{$item->title}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -56,14 +69,21 @@
                                 <input type="email" name="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
                             </div>--}}
                             <div class="form-group">
-                                <label for="exampleInputFile">File input</label>
+                                <label for="exampleInputFile">Profile Image</label>
                                 <div class="input-group">
                                     <div class="custom-file">
-                                        <input type="file"  name="image"  class="custom-file-input" id="exampleInputFile">
+                                        <input type="file" name="profile_image" class="custom-file-input" id="exampleInputFile">
                                         <label class="custom-file-label" for="exampleInputFile">Choose file</label>
                                     </div>
-                                    <div class="input-group-append">
-                                        <span class="input-group-text" id="">Upload</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="exampleInputFile">Cover Image</label>
+                                <div class="input-group">
+                                    <div class="custom-file">
+                                        <input type="file" name="cover_image" class="custom-file-input" id="exampleInputFile">
+                                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
                                     </div>
                                 </div>
                             </div>
@@ -83,7 +103,7 @@
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form role="form" method="POST" action="{{route('experience.store', $user->id)}}">
+                    <form role="form" method="POST" action="{{route('experience.store', $user)}}">
                         @csrf
                         <div class="card-body">
                             <div class="form-group">
@@ -101,6 +121,10 @@
                             <div class="form-group">
                                 <label>End Date</label>
                                 <input type="date" class="form-control" name="ended_at">
+                            </div>
+                            <div class="form-group form-check">
+                                <input type="checkbox" class="form-check-input" id="currently_working" name="currently_working">
+                                <label class="form-check-label" for="currently_working">Currently working here</label>
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputPassword1">Description</label>
@@ -138,6 +162,10 @@
                             <div class="form-group">
                                 <label>Country</label>
                                 <input type="text" class="form-control" name="title_or_country">
+                            </div>
+                            <div class="form-group form-check">
+                                <input type="checkbox" class="form-check-input" id="currently_studying" name="currently_working" value="true">
+                                <label class="form-check-label" for="currently_studying">Currently studying here</label>
                             </div>
                             <input type="hidden" name="type" value="{{\App\Models\Enums\ExperienceTypes::education}}">
                         </div>
@@ -179,7 +207,6 @@
                         </div>
                     </form>
                 </div>
-
 
                 <div class="card card-primary">
                     <div class="card-header">
@@ -224,33 +251,40 @@
                     </table>
                 </div>
 
-                {{--<div class="card card-primary">
+                <div class="card card-primary">
                     <div class="card-header">
-                        <h3 class="card-title">Change Password</h3>
+                        <h3 class="card-title">Reviews</h3>
                     </div>
-                    <!-- /.card-header -->
-                    <!-- form start -->
-                    <form role="form" method="POST" action="{{route('password.change', $user)}}">
-                        @csrf
-                        <div class="card-body">
-                            <div class="form-group">
-                                <label>Current Password</label>
-                                <input type="password" class="form-control" name="current_password">
-                            </div>
-                            <div class="form-group">
-                                <label>New Password</label>
-                                <input type="text" class="form-control" name="new_password">
-                            </div>
-                            <div class="form-group">
-                                <label>Confirm New Password</label>
-                                <input type="text" class="form-control" name="confirm_password">
-                            </div>
-                        </div>
-                        <div class="card-footer">
-                            <button type="submit" class="btn btn-success">Save</button>
-                        </div>
-                    </form>
-                </div>--}}
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">Title</th>
+                            <th scope="col">Rate</th>
+                            <th scope="col">Amount</th>
+                            <th scope="col">Comment</th>
+                            <th scope="col">Posted By</th>
+                            <th scope="col">Posted</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @forelse($reviews as $key => $item)
+                        <tr>
+                            <td>{{$item->job->title}}</td>
+                            <td>{{$item->rating->rating}}</td>
+                            <td>{{$item->job->budget}}</td>
+                            <td>{{$item->comment}}</td>
+                            <td>{{$item->postedBy->username}}</td>
+                            <td>{{$carbon->createFromTimeStamp(strtotime($item->created_at))->diffForHumans()}}</td>
+                        </tr>
+                        @empty
+                            <tr>
+                                <td rowspan="5">No Review Found</td>
+                            </tr>
+                        @endforelse
+                        </tbody>
+                    </table>
+                </div>
+
                 <!-- /.card -->
             </div>
         </div>

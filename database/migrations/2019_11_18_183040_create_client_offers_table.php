@@ -18,9 +18,12 @@ class CreateClientOffersTable extends Migration
             $table->unsignedBigInteger('freelancer_id');
             $table->unsignedBigInteger('client_id');
             $table->unsignedBigInteger('bid_id');
+            $table->string('client_freelancer_bid');
             $table->double('amount');
             $table->string('delivery_days');
             $table->text('message')->nullable();
+
+            $table->unique(['client_freelancer_bid']);
 
             $table->foreign('freelancer_id')->on('users')->references('id');
             $table->foreign('client_id')->on('users')->references('id')->onDelete('cascade');

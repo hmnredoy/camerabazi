@@ -18,6 +18,7 @@ class CreateProfileTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->string('gender')->nullable();
             $table->string('phone')->nullable();
+            $table->string('address')->nullable();
             $table->string('profile_image')->nullable();
             $table->string('cover_image')->nullable();
             $table->integer('bid')->default(0);

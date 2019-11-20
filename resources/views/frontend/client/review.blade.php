@@ -15,7 +15,7 @@
                     <!-- /.card-header -->
                     <!-- form start -->
 
-                    <form role="form" method="POST" action="{{route('review.store', $job->id)}}">
+                    <form role="form" method="POST" action="{{route('review.store', $job->slug)}}">
                         @csrf
                         <div class="card-body">
                             <div class="form-group">

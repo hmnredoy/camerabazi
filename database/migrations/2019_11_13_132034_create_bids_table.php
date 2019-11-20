@@ -15,15 +15,17 @@ class CreateBidsTable extends Migration
     {
         Schema::create('bids', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('slug')->unique();
             $table->unsignedBigInteger('job_id');
             $table->unsignedBigInteger('freelancer_id');
+            $table->string('job_freelancer');
             $table->double('amount');
             $table->string('delivery_days');
             $table->text('description');
             $table->tinyInteger('status')->default(1);
             $table->timestamps();
 
-            $table->unique(['job_id','freelancer_id']);
+            $table->unique(['job_id','freelancer_id', 'job_freelancer']);
 
             $table->foreign('job_id')->references('id')->on('jobs')->onDelete('cascade');
             $table->foreign('freelancer_id')->references('id')->on('users')->onDelete('cascade');
@@ -37,6 +39,10 @@ class CreateBidsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('bids');
+//        Schema::dropIfExists('bids');
+
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+        Schema::drop('bids');
+        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 }

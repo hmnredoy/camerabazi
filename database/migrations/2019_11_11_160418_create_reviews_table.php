@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -17,12 +18,14 @@ class CreateReviewsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('posted_by');
             $table->unsignedBigInteger('posted_on');
-            $table->unsignedBigInteger('project_id');
-            $table->float('rating')->default(0);
+            $table->unsignedBigInteger('job_id');
+            $table->string('commenter_job');
             $table->text('comment')->nullable();
             $table->tinyInteger('status')->default(1);
             $table->timestamps();
             $table->softDeletes();
+
+            $table->unique(['posted_by', 'job_id', 'commenter_job']);
 
             $table->foreign('posted_on')
                 ->references('id')
@@ -32,6 +35,10 @@ class CreateReviewsTable extends Migration
             $table->foreign('posted_by')
                 ->references('id')
                 ->on('users');
+
+            $table->foreign('job_id')
+                ->references('id')
+                ->on('jobs');
         });
     }
 
@@ -42,6 +49,8 @@ class CreateReviewsTable extends Migration
      */
     public function down()
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
         Schema::dropIfExists('reviews');
+        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 }

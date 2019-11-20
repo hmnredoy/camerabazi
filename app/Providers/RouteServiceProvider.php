@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Bid;
+use App\Models\Job;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
@@ -26,6 +28,14 @@ class RouteServiceProvider extends ServiceProvider
         //
 
         parent::boot();
+
+        Route::bind('job', function($slug) {
+            return Job::where('slug', $slug)->firstOrFail();
+        });
+
+        Route::bind('bid', function($slug) {
+            return Bid::where('slug', $slug)->firstOrFail();
+        });
     }
 
     /**

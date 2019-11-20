@@ -15,7 +15,7 @@ class UserController extends DevCrudController
 
     public function index()
     {
-        $this->data = User::where('role_id', '<>', 3)
+        $this->data = User::where('role_id', '<>', 3)->latest()
             ->paginate(15);
 
         if (view()->exists("{$this->viewPrefix}.index")) {

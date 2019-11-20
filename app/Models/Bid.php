@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Bid extends Model
 {
-    protected $fillable = ['job_id', 'freelancer_id', 'amount', 'delivery_days', 'description'];
+    protected $fillable = ['slug', 'job_id', 'freelancer_id','job_freelancer', 'amount', 'delivery_days', 'description'];
 
     public function attachments()
     {
@@ -20,4 +20,5 @@ class Bid extends Model
     public function freelancer(){
         return $this->hasOne(User::class, 'id', 'freelancer_id');
     }
+
 }

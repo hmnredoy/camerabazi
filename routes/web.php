@@ -3,15 +3,28 @@
 use TunnelConflux\DevCrud\Helpers\DevCrudHelper;
 
 //Redoy
+
+Route::group(['prefix' => 'messages'], function () {
+    Route::get('/', ['as' => 'messages', 'uses' => 'MessagesController@index']);
+    Route::get('create', ['as' => 'messages.create', 'uses' => 'MessagesController@create']);
+    Route::post('/', ['as' => 'messages.store', 'uses' => 'MessagesController@store']);
+    Route::get('{id}', ['as' => 'messages.show', 'uses' => 'MessagesController@show']);
+    Route::put('{id}', ['as' => 'messages.update', 'uses' => 'MessagesController@update']);
+});
+
 Route::get('dashboard', 'DashboardController@index')->name('dashboard.index');
 DevCrudHelper::setRoutes("location", "LocationController");
 DevCrudHelper::setRoutes("skill_tool", "SkillToolController");
 DevCrudHelper::setRoutes("membership-plan", "MembershipPlanController");
 DevCrudHelper::setRoutes("user", "UserController");
 
-Route::get('profile/{user}', 'ProfileController@show')->name('profile.show');
-Route::get('profile/{user}/edit', 'ProfileController@edit')->name('profile.edit');
-Route::post('profile/{user}/edit', 'ProfileController@update')->name('profile.update');
+Route::middleware('auth')->group(function () {
+    Route::get('profile/edit', 'ProfileController@edit')->name('profile.edit');
+    Route::patch('profile/edit', 'ProfileController@update')->name('profile.update');
+    Route::post('profile/edit/experience', 'ExperienceController@store')->name('experience.store');
+    Route::get('profile/{user}', 'ProfileController@show')->name('profile.show');
+});
+
 
 
 Route::get('client/offer/{bid}', 'ClientOfferController@index')->name('client.offer.index');
@@ -25,7 +38,6 @@ Route::get('memberships', 'MembershipPlanController@showPlans')->name('membershi
 Route::post('membership/{user}/{membershipPlan}', 'MembershipPurchaseController@buyMembership')->name('membership.buy');
 //Route::post('profile/{user}/change-password', 'ProfileController@changePassword')->name('password.change');
 
-Route::post('profile/{user}/edit/experience', 'ExperienceController@store')->name('experience.store');
 
 Route::post('portfolio/add', 'PortfolioController@store')->name('portfolio.store');
 
@@ -40,10 +52,10 @@ Route::get('job/{id}/bid/delete', 'BidController@delete')->name('bid.delete');//
 
 Route::get('job/{job}/review', 'ReviewController@show')->name('review.show');
 Route::post('job/{job}/review', 'ReviewController@store')->name('review.store');
-//Route::post('profile/edit/experience', 'ExperienceController@educationStore')->name('education.store');
-//DevCrudHelper::setRoutes("experience", "ExperienceController");
 
-
+/*Route::fallback(function () {
+    return 'Not found';
+});*/
 
 
 
