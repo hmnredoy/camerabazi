@@ -167,4 +167,36 @@ class CustomHelper
         return back()->with('success',$message);
     }
 
+    /**
+     * @param $paginateOrSelect
+     * @return stdClass
+     *
+     * getOrPaginate expects a parameter that will be a type of array (In cas you want to get all data)
+     * E.g : $paginateOrSelect = ['*']
+     *
+     * getOrPaginate has to be feed with $paginateOrSelect
+     * getOrPaginate will return an object.
+     * table column names will be returned in $perPage if it has been fed with column names
+     * perPage value will be returned otherwise
+     *
+     * Returns an object : $getOrPaginate, $perPage
+     */
+
+    static function getOrPaginate($paginateOrSelect = ['*']){
+        $getOrPaginate = 'get';
+        $perPage = $paginateOrSelect;
+        if(!is_array($paginateOrSelect)){
+            $perPage = '*';
+        }
+        if(is_numeric($paginateOrSelect)){
+            $perPage = $paginateOrSelect;
+            $getOrPaginate = 'paginate';
+        }
+        $data = new stdClass;
+        $data->getOrPaginate = $getOrPaginate;
+        $data->perPage       = $perPage;
+
+        return $data;
+    }
+
 }

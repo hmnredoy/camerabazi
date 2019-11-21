@@ -6,14 +6,10 @@ namespace App\Models;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\DB;
-use TunnelConflux\DevCrud\Models\DevCrudModel;
-use Cmgmyr\Messenger\Traits\Messagable;
 
 class User extends AppModel
 {
     use Notifiable;
-    use Messagable;
 
     /**
      * The attributes that are mass assignable.
@@ -89,16 +85,24 @@ class User extends AppModel
             : 'N\A';
     }
 
-    public function membership(){
+    public function memberships(){
         return $this->hasMany(MembershipPurchase::class, 'freelancer_id', 'id');
     }
 
-    public function ratings() {
+    public function ratings(){
         return $this->hasMany(Rating::class, 'user_id');
     }
 
-    public function reviews() {
+    public function reviews(){
         return $this->hasMany(Review::class, 'posted_on');
+    }
+
+    public function account(){
+        return $this->hasOne(Account::class);
+    }
+
+    public function getAccountInfoAttribute(){
+        return $this->account()->first();
     }
 
 }

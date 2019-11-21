@@ -17,6 +17,9 @@
                         <td>Rating : {{$membershipData['rating']}}</td>
                     </tr>
                     <tr>
+                        <td>Balance : {{$user->accountInfo->current_balance ?? 0}} BDT</td>
+                    </tr>
+                    <tr>
                         <td>Bids Remaining : {{$membershipData['memberBids']}}</td>
                     </tr>
                     <tr>
@@ -26,7 +29,7 @@
                         <td>Coins Remaining : {{$membershipData['memberCoins']}}</td>
                     </tr>
                     <tr>
-                        <td>Amount Spent : {{$membershipData['amountSpent']}}</td>
+                        <td>Amount Spent : {{$membershipData['amountSpent']}} BDT</td>
                     </tr>
                 </table>
                 <!-- general form elements -->

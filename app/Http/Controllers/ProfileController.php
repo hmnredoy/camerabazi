@@ -20,7 +20,7 @@ use ReflectionClass;
 class ProfileController extends Controller
 {
     public $user;
-    protected $membership;
+    public $membership;
 
     public function __construct(MembershipPurchaseRepository $membership)
     {
@@ -37,7 +37,7 @@ class ProfileController extends Controller
         $memberBids = $this->membership->getSum($user, 'bids');
         $memberSkills = $this->membership->getSum($user, 'skills');
         $memberCoins = $this->membership->getSum($user, 'coins');
-        $amountSpent = $this->membership->getSum($user, 'amount');
+        $amountSpent = $this->membership->getSum($user, 'amount', 1, false);
 
         $reviews = $user->reviews()->get();
         $rating = $user->ratings()->avg('rating');

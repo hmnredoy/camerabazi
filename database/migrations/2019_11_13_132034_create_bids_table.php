@@ -40,9 +40,8 @@ class CreateBidsTable extends Migration
     public function down()
     {
 //        Schema::dropIfExists('bids');
-
-        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
+        Schema::enableForeignKeyConstraints();
         Schema::drop('bids');
-        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+        Schema::disableForeignKeyConstraints();
     }
 }

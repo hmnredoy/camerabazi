@@ -4,6 +4,7 @@
 namespace App\Repositories;
 
 
+use App\Http\Controllers\Helper\CustomHelper;
 use App\Models\Enums\MembershipStatus;
 use App\Models\User;
 
@@ -16,7 +17,7 @@ class MembershipPurchaseRepository
             $user = User::find($obj_or_id);
         }
         if($user) {
-            return $user->membership();
+            return $user->memberships();
         }
         return false;
     }
@@ -33,21 +34,34 @@ class MembershipPurchaseRepository
         return [];
     }
 
-    public function getSum($obj_or_id, $sum_column, $status = 1){
-        $membership = $this->getUserMembership($obj_or_id);
-        if($membership){
+    public function getSum($model_or_id, $sum_column, $status = 1, $expire = true){
+        $membership = $this->getUserMembership($model_or_id);
+        if($expire){
             return $membership
                 ->where('expire', '>=', date('Y-m-d', strtotime("now")))
+                ->where('status', $status)
+                ->sum($sum_column);
+        }
+        if($membership){
+            return $membership
                 ->where('status', $status)
                 ->sum($sum_column);
         }
         return [];
     }
 
-    public function getAllData($obj_or_id, $paginate = 15){
+    public function getAllData($obj_or_id, $paginateOrSelect = ['*'], $with_expire = false){
         $membership = $this->getUserMembership($obj_or_id);
+
+        $data  = CustomHelper::getOrPaginate($paginateOrSelect);
+        $getOrPaginate = $data->getOrPaginate;
+        $perPage        = $data->perPage;
+
         if($membership){
-            return $membership->paginate($paginate);
+            if($with_expire){
+                return $membership->where('expire', '>=', date('Y-m-d', strtotime("now")))->$getOrPaginate($perPage);
+            }
+            return $membership->$getOrPaginate($perPage);
         }
         return [];
     }

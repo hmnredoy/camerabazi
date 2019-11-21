@@ -15,7 +15,7 @@
                     </div>
                     <div class="card-body">
                         @foreach($memberships as $membership)
-                            <form role="form" method="POST" action="{{route('membership.buy', ['user' => auth()->user(), 'membershipPlan' => $membership->id])}}">
+                            <form role="form" method="POST" action="{{route('membership.buy', $membership->id)}}">
                                 @csrf
                                 {{$membership->title}}
                                 <button type="submit" class="btn btn-xs btn-success">BUY</button>

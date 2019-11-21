@@ -4,14 +4,6 @@ use TunnelConflux\DevCrud\Helpers\DevCrudHelper;
 
 //Redoy
 
-Route::group(['prefix' => 'messages'], function () {
-    Route::get('/', ['as' => 'messages', 'uses' => 'MessagesController@index']);
-    Route::get('create', ['as' => 'messages.create', 'uses' => 'MessagesController@create']);
-    Route::post('/', ['as' => 'messages.store', 'uses' => 'MessagesController@store']);
-    Route::get('{id}', ['as' => 'messages.show', 'uses' => 'MessagesController@show']);
-    Route::put('{id}', ['as' => 'messages.update', 'uses' => 'MessagesController@update']);
-});
-
 Route::get('dashboard', 'DashboardController@index')->name('dashboard.index');
 DevCrudHelper::setRoutes("location", "LocationController");
 DevCrudHelper::setRoutes("skill_tool", "SkillToolController");
@@ -26,6 +18,7 @@ Route::middleware('auth')->group(function () {
 });
 
 
+Route::get('freelancer/dashboard', 'DashboardController@freelancer')->name('freelancer.dashboard');
 
 Route::get('client/offer/{bid}', 'ClientOfferController@index')->name('client.offer.index');
 Route::post('client/offer/{bid}', 'ClientOfferController@store')->name('client.offer.store');
@@ -35,7 +28,7 @@ Route::post('freelancer/offer/{bid}', 'FreelancerOfferController@update')->name(
 
 
 Route::get('memberships', 'MembershipPlanController@showPlans')->name('membership.show');
-Route::post('membership/{user}/{membershipPlan}', 'MembershipPurchaseController@buyMembership')->name('membership.buy');
+Route::post('membership/{membershipPlan}', 'MembershipPurchaseController@buyMembership')->name('membership.buy');
 //Route::post('profile/{user}/change-password', 'ProfileController@changePassword')->name('password.change');
 
 

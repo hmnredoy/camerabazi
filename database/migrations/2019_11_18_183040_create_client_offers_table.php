@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Enums\OfferStatus;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -22,6 +23,7 @@ class CreateClientOffersTable extends Migration
             $table->double('amount');
             $table->string('delivery_days');
             $table->text('message')->nullable();
+            $table->tinyInteger('status')->default(OfferStatus::Active);
 
             $table->unique(['client_freelancer_bid']);
 

@@ -12,15 +12,25 @@ use Illuminate\Http\Request;
 
 class MembershipPurchaseController extends Controller
 {
-    protected $membership;
+    private $membership;
 
     public function __construct(MembershipPurchaseRepository $membership)
     {
         $this->membership = $membership;
     }
-    public function buyMembership(User $user, MembershipPlan $membershipPlan){
-        $membershipData = $this->membership->getMembershipData($user);
-      //  dd($user, $membershipData,  $membershipPlan);
+    public function buyMembership(MembershipPlan $membershipPlan){
+        $user = auth()->user();
+       // $membershipData = $this->membership->getMembershipData($user);
+        $accountInfo = $user->accountInfo;
+        $currentBalance = $accountInfo->current_balance ?? 0;
+
+        if($currentBalance < $membershipPlan->amount){
+            return back()->with('error', 'Low balance! Please recharge.');
+        }
+        $current_balance = $currentBalance - $membershipPlan->amount;
+        $last_balance = $currentBalance;
+        $user->account()->update(compact('current_balance', 'last_balance'));
+
         if($membershipPlan){
             $updatedPlan = [
                 "freelancer_id" => $user->id,
@@ -37,4 +47,5 @@ class MembershipPurchaseController extends Controller
         return success();
 
     }
+
 }
