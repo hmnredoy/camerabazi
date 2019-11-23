@@ -64,7 +64,7 @@ class FreelancerHomeTest extends TestCase
     }
 
     /** @test */
-    public function he_can_show_his_all_proposals()
+    public function he_can_show_his_all_proposed_jobs()
     {
 
         $this->withoutExceptionHandling();
@@ -91,7 +91,7 @@ class FreelancerHomeTest extends TestCase
 
 
 
-        $respone = $this->get('/freelancer/submitted-bids');
+        $respone = $this->get('/freelancer/proposed-jobs');
 
 
         $respone->assertSee($myBid1->amount);

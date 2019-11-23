@@ -11,12 +11,15 @@ class FreelancerController extends Controller
     public function home(Request $request)
     {
 
-
-
-
         return view('freelancer.home',['jobs'=>$jobs]);
     }
 
+    public function proposedJobs()
+    {
+        $proposededJobs = Job::freelancerProposedJobs()->latest()->get();
+
+        return view('client.myjobs',['jobs'=>$proposededJobs]);
+    }
     public function submittedBidsJobs()
     {
         $submittedBids = auth()->user()->getSubmittedBids();

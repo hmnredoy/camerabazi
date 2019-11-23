@@ -44,11 +44,30 @@ public function can_see_post_job_link()
 
         $this->actingAs($client);
 
-        $this->get('/client/jobs')->assertSee($job1->title);
-        $this->get('/client/jobs')->assertSee($job2->title);
+        $this->get('/client/submitted-jobs')->assertSee($job1->title);
+        $this->get('/client/submitted-jobs')->assertSee($job2->title);
+        $this->get('/client/submitted-jobs')->assertSee($job2->title);
+    }
 
+    /** @test */
+    public function can_see_his_canceled_job()
+    {
+        $this->withoutExceptionHandling();
 
+        $clientRole = $this->createClientRole();
+        $client = factory(User::class)->create(['role_id'=>$clientRole->id]);
 
+        $job1 = factory(Job::class)->create(['user_id'=>$client->id]);
+        $job2 = factory(Job::class)->create(['user_id'=>$client->id]);
+        $job3 = factory(Job::class)->create(['user_id'=>$client->id]);
+
+        $this->actingAs($client);
+
+        $this->post($job3->path().'/cancel');
+
+        $this->get('/client/canceleded-jobs')->assertDontSee($job1->title);
+        $this->get('/client/canceleded-jobs')->assertDontSee($job2->title);
+        $this->get('/client/canceleded-jobs')->assertSee($job3->title);
     }
 
 
@@ -78,10 +97,6 @@ public function can_see_post_job_link()
         $this->get('/client/ongoing-jobs')->assertSee($job2->title);
         $this->get('/client/ongoing-jobs')->assertDontSee($jobexpired->title);
         $this->get('/client/ongoing-jobs')->assertDontSee($jobexpired2->title);
-
-
-
-
 
     }
 

@@ -20,10 +20,17 @@ class ClientController extends Controller
 
     }
 
-    public function myJobs()
+    public function submittedJobs()
     {
-        $jobs = auth()->user()->jobs;
-        return view('client.myjobs',['jobs'=>$jobs]);
+        //$jobs = auth()->user()->jobs;
+        $submittedJobs = Job::clientSubmittedJobs()->latest()->get();
+        return view('client.myjobs',['jobs'=>$submittedJobs]);
+    }
+
+    public function canceledJobs()
+    {
+        $canceledJobs = Job::clientCanceledJobs()->latest()->get();
+        return view('client.myjobs',['jobs'=>$canceledJobs]);   
     }
 
     public function jobProposal(Job $job)

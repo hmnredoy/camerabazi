@@ -23,5 +23,10 @@ class Bid extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function scopeProposedBid($query)
+    {
+        return $query->where('freelancer_id',auth()->id());   
+    }
+
 
 }

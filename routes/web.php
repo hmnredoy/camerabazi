@@ -17,6 +17,7 @@ Route::get('profile/change-password', 'ProfileController@showchangePassword');
 
 //Route::get('job/{job}/bid', 'BidController@show')->name('bid.show');
 Route::get('jobs/{job}/bid', 'BidController@show')->name('bid.show');
+Route::post('jobs/{job}/cancel', 'JobController@cancel')->name('job.cancel');
 Route::post('jobs/{job}/bid', 'BidController@store')->name('bid.store');
 Route::post('jobs/{job}/bids/{bid}/approved', 'BidController@approved');
 Route::post('jobs/{job}/bids/{bid}/cancel', 'BidController@cancel');
@@ -67,10 +68,11 @@ Route::get('/search/','JobController@search');
 //Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/client/home', 'ClientController@home');
 Route::get('/client/ongoing-jobs', 'ClientController@ongoingJobs');
-Route::get('/client/jobs', 'ClientController@myJobs');
+Route::get('/client/submitted-jobs', 'ClientController@submittedJobs');
+Route::get('/client/canceleded-jobs', 'ClientController@canceledJobs');
 Route::get('/client/jobs/{job}/proposals', 'ClientController@jobProposal');
 Route::get('/freelancer/home', 'FreelancerController@home');
-Route::get('/freelancer/submitted-jobs', 'FreelancerController@submittedBidsJobs');
+Route::get('/freelancer/proposed-jobs', 'FreelancerController@proposedJobs');
 Route::get('/freelancer/active-jobs', 'FreelancerController@activeBids');
 Route::get('/freelancer/ongoing-jobs', 'FreelancerController@ongoingBids');
 

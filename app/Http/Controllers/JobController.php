@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Job;
 use App\Models\Location;
+use App\Models\Enums\JobStatus;
 use Illuminate\Http\Request;
 
 class JobController extends Controller
@@ -158,5 +159,11 @@ class JobController extends Controller
 
         return $query->get();
 
+    }
+
+    public function cancel(Job $job)
+    {
+        $job->status = JobStatus::cancelled;
+        $job->save();
     }
 }

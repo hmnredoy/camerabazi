@@ -96,10 +96,35 @@ class Job extends Model
     {
         return $this->bids->avg('amount');
 
-
-
-
     }
+
+    public function scopeClientSubmittedJobs($query)
+    {
+
+        return  $query->where('user_id',auth()->id());
+        
+    }
+
+    public function scopeClientCanceledJobs($query)
+    {
+
+        return  $query->where('user_id',auth()->id())
+                        ->where('status',JobStatus::cancelled);
+        
+    }
+
+    public function scopeFreelancerProposedJobs($query)
+    {
+
+        $proposalsQuery = Bid::proposedBid();          
+        return  $proposalsQuery->where('job_id',$this->id);
+                        
+        
+    }
+
+    
+
+    
 
 
 }

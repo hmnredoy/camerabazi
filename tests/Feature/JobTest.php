@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Job;
 use App\Models\Location;
 use App\Models\User;
+use App\Models\Enums\JobStatus;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -76,5 +77,20 @@ class JobTest extends TestCase
 
 
 
+    }
+
+    /** @test */
+    public function client_can_cancel_a_job()
+    {
+        $this->withoutExceptionHandling();
+
+        $clientRole = $this->createClientRole();
+        $client = factory(User::class)->create(['role_id'=>$clientRole->id]);
+        $job = factory(Job::class)->create(['user_id'=>$client->id]);
+        $this->actingAs($client);
+
+        $this->post($job->path().'/cancel');
+
+        $this->assertDatabaseHas('jobs',['status'=>JobStatus::cancelled]);
     }
 }
