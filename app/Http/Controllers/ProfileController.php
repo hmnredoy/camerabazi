@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Helper\CustomHelper;
-use App\Http\Controllers\Helper\HelperController;
 use App\Models\Enums\ExperienceTypes;
 use App\Models\Enums\SkillToolTypes;
 use App\Models\Location;
@@ -51,9 +50,8 @@ class ProfileController extends Controller
             'memberSkills' => $memberSkills,
             'memberCoins' => $memberCoins,
             'amountSpent' => $amountSpent,
-            'purchaseHistory' => $purchaseHistory
+            'purchaseHistory' => $purchaseHistory,
         ];
-
 
         $locations = Location::all();
         $skills = SkillTool::all();

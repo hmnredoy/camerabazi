@@ -20,13 +20,13 @@ class TestSeeder extends Seeder
         DB::table('locations')->delete();
         DB::table('categories')->delete();
         DB::table('users')->delete();
-        DB::table('profile')->delete();
+        DB::table('profile')->delete();*/
         DB::table('skill_tools')->delete();
         DB::table('user_skill_tool')->delete();
-        DB::table('portfolio')->delete();
-        DB::table('experiences')->delete();
+        /*DB::table('portfolio')->delete();
+        DB::table('experiences')->delete();*/
 
-        DB::table('users')->insert([
+/*        DB::table('users')->insert([
             [
                 'id' => 1,
                 'role_id' => 1,
@@ -85,7 +85,7 @@ class TestSeeder extends Seeder
                 'created_at' => '2019-09-07 12:55:11',
                 'updated_at' => '2019-09-07 12:55:11',
             ],
-        ]);
+        ]);*/
 
         DB::table('skill_tools')->insert([
             [
@@ -120,23 +120,23 @@ class TestSeeder extends Seeder
             ],
         ]);
 
-        DB::table('user_skill_tool')->insert([
-            [
-                'user_id' => 1,
-                'skill_tool_id' => 1,
-            ],[
-                'user_id' => 1,
-                'skill_tool_id' => 2,
-            ],[
-                'user_id' => 1,
-                'skill_tool_id' => 3,
-            ],[
-                'user_id' => 1,
-                'skill_tool_id' => 4,
-            ],
-        ]);
+//        DB::table('user_skill_tool')->insert([
+//            [
+//                'user_id' => 1,
+//                'skill_tool_id' => 1,
+//            ],[
+//                'user_id' => 1,
+//                'skill_tool_id' => 2,
+//            ],[
+//                'user_id' => 1,
+//                'skill_tool_id' => 3,
+//            ],[
+//                'user_id' => 1,
+//                'skill_tool_id' => 4,
+//            ],
+//        ]);
 
-        DB::table('portfolio')->insert([
+    /*    DB::table('portfolio')->insert([
             [
                 'id' => 1,
                 'user_id' => 1,

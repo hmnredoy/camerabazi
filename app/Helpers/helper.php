@@ -71,10 +71,16 @@ function validateRequest($model, $request, ...$args){
       'id', 'created_at', 'updated_at'
     ];
 
-    $columns = $model
-        ->getConnection()
-        ->getSchemaBuilder()
-        ->getColumnListing($model->getTable());
+    $columns = $model;
+
+    if(is_object($model)){
+        $columns = $model
+            ->getConnection()
+            ->getSchemaBuilder()
+            ->getColumnListing($model->getTable());
+    }
+
+
 
     foreach ($unsetItems as $unsetItem){
         if(array_search($unsetItem, $columns) !== false){
@@ -84,7 +90,12 @@ function validateRequest($model, $request, ...$args){
     }
 
     $validate = [];
-    $inputs = $request->all();
+
+    $inputs = $request;
+
+    if(is_object($request)){
+        $inputs = $request->all();
+    }
 
     foreach ($columns as $field){
         $validateThis = [
@@ -119,7 +130,7 @@ function validateRequest($model, $request, ...$args){
         }
     }
 
-    Validator::make($request->all(), $validate, $args[1] ?? [])->validate();
+    Validator::make($inputs, $validate, $args[1] ?? [])->validate();
 }
 
 function error($message = 'Failed!', $route = null, $id = null) {

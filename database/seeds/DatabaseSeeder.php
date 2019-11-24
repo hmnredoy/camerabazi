@@ -41,11 +41,11 @@ class DatabaseSeeder extends Seeder
 //
 //        $role = Role::create(['name' => 'super-admin']);
 //        $role->givePermissionTo(Permission::all());
-        $this->call(RoleSeeder::class);
         $this->call(JobSeeder::class);
+        /*$this->call(RoleSeeder::class);
         $this->call(CategorySeeder::class);
         factory(Location::class,10)->create();
-        //$this->call(TestSeeder::class);
+        $this->call(TestSeeder::class);*/
 
     }
 }

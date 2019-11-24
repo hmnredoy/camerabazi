@@ -10,7 +10,8 @@ class FreelancerController extends Controller
 {
     public function home()
     {
-        $jobs = auth()->user()->jobs()->get();
+        $jobs = Job::active()->get();
+
         return view('freelancer.home',['jobs'=>$jobs]);
     }
 

@@ -11,7 +11,7 @@
             <div class="col-md-8">
                 <table>
                     <tr>
-                        <td>Name : {{$user->username}}</td>
+                        <td>Name : {{$user->name}}</td>
                     </tr>
                     <tr>
                         <td>Rating : {{$membershipData['rating']}}</td>
@@ -46,8 +46,8 @@
                             <div class="form-group">
                                 <label for="gender">Gender</label>
                                 <select class="form-control" id="gender" name="gender">
-                                    <option value="male" {{ auth()->user()->profile()->gender == 'male' ? 'selected' : ''}}>Male</option>
-                                    <option value="female" {{ auth()->user()->profile()->gender == 'female' ? 'selected' : ''}}>Female</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
                                 </select>
                             </div>
 
@@ -55,7 +55,7 @@
                                 <label for="location">Location</label>
                                 <select class="form-control" id="location" name="location">
                                     @foreach($locations as $item)
-                                    <option value="{{$item->id}}" {{ auth()->user()->location()->id == $item->id ? 'selected' : '' }}>{{$item->title}}</option>
+                                    <option value="{{$item->id}}">{{$item->title}}</option>
                                     @endforeach
                                 </select>
                             </div>

@@ -7,24 +7,10 @@ use App\Models\Job;
 use App\Models\Location;
 use App\Models\Enums\JobStatus;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use TunnelConflux\DevCrud\Helpers\DevCrudHelper;
 
 class JobController extends Controller
 {
-
-    /**
-     * Instantiate a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-       // $this->middleware('auth');
-
-
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -67,8 +53,6 @@ class JobController extends Controller
         $job = new Job();
 
         $data['user_id'] = auth()->id();
-
-        $data['slug'] = DevCrudHelper::makeSlug($job, $request->input('title'));
 
         $job = $job->create($data);
 
@@ -143,11 +127,6 @@ class JobController extends Controller
             $query->where('location_id','=',$location);
         }
 
-
-
-
-
-
         dd($query->get());
 
         return $query->get();
@@ -156,7 +135,8 @@ class JobController extends Controller
 
     public function cancel(Job $job)
     {
-        $job->status = JobStatus::cancelled;
+        $job->status = JobStatus::Cancelled;
         $job->save();
     }
+
 }

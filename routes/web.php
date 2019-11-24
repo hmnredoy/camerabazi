@@ -1,16 +1,23 @@
 <?php
 
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use TunnelConflux\DevCrud\Helpers\DevCrudHelper;
 
 
 //Redoy
 Route::get('dashboard', 'DashboardController@index')->name('dashboard.index');
-DevCrudHelper::setRoutes("location", "LocationController");
-DevCrudHelper::setRoutes("skill_tool", "SkillToolController");
-DevCrudHelper::setRoutes("membership-plan", "MembershipPlanController");
-DevCrudHelper::setRoutes("user", "UserController");
+
+Route::prefix('admin')->group(function () {
+    DevCrudHelper::setRoutes("location", "LocationController");
+    DevCrudHelper::setRoutes("skill_tool", "SkillToolController");
+    DevCrudHelper::setRoutes("membership-plan", "MembershipPlanController");
+    DevCrudHelper::setRoutes("user", "UserController");
+    Route::namespace('Backend')->group(function (){
+        DevCrudHelper::setRoutes("job", "JobController");
+        DevCrudHelper::setRoutes("bid", "BidController");
+    });
+});
+
 
 Route::middleware('auth')->group(function () {
     Route::get('profile/edit', 'ProfileController@edit')->name('profile.edit');
@@ -38,9 +45,9 @@ Route::post('membership/{membershipPlan}', 'MembershipPurchaseController@buyMemb
 Route::post('portfolio/add', 'PortfolioController@store')->name('portfolio.store');
 
 //Freelancer Bid
-Route::get('jobs/{job}/bid', 'BidController@show')->name('bid.show');
-Route::post('jobs/{job}/cancel', 'JobController@cancel')->name('job.cancel');
-Route::post('jobs/{job}/bid', 'BidController@store')->name('bid.store');
+Route::get('jobs/bid/{job}', 'BidController@show')->name('bid.show');
+Route::post('jobs/bid/{job}', 'BidController@store')->name('bid.store');
+Route::post('jobs/cancel/{job}', 'JobController@cancel')->name('job.cancel');
 Route::post('jobs/{job}/bids/{bid}/approved', 'BidController@approved');
 Route::post('jobs/{job}/bids/{bid}/cancel', 'BidController@cancel');
 Route::post('jobs/{job}/bids/{bid}/succeeded', 'BidController@succeeded');

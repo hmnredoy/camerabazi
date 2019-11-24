@@ -51,6 +51,18 @@
                     <p>Membership Plans</p>
                 </a>
             </li>
+            <li class="nav-item has-treeview">
+                <a href="{{ route('job.index') }}" class="nav-link {{ Route::is('job.*') ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-copy"></i>
+                    <p>Jobs</p>
+                </a>
+            </li>
+            <li class="nav-item has-treeview">
+                <a href="{{ route('bid.index') }}" class="nav-link {{ Route::is('bid.*') ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-copy"></i>
+                    <p>Bids</p>
+                </a>
+            </li>
         </ul>
     </nav>
     <!-- /.sidebar-menu -->

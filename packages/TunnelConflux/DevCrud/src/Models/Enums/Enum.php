@@ -51,4 +51,11 @@ abstract class Enum
 
         return Str::title(str_replace("_", " ", Str::snake(self::getKey($value) ?: "")));
     }
+
+    static function unsetKeys($inputs, $unsetElements){
+        foreach ($unsetElements as $unsetKey){
+            unset($inputs[$unsetKey]);
+        }
+        return $inputs;
+    }
 }

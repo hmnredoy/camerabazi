@@ -41,7 +41,7 @@ class MembershipPurchaseController extends Controller
                 "coins" => $membershipPlan->coins,
                 "expire" => $membershipPlan->expire_days ? CarbonImmutable::now()->add($membershipPlan->expire_days, 'day')->format('Y-m-d H:i:s') : null
             ];
-            $user->membership()->create($updatedPlan);
+            $user->memberships()->create($updatedPlan);
         }
 
         return success();

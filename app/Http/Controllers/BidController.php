@@ -2,17 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Attachment;
 use App\Models\Bid;
-use App\Models\MembershipPurchase;
 use App\Models\Enums\JobStatus;
 use App\Models\Job;
 use App\Repositories\MembershipPurchaseRepository;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\Rule;
-use TunnelConflux\DevCrud\Helpers\DevCrudHelper;
 
 class BidController extends Controller
 {
@@ -33,15 +27,13 @@ class BidController extends Controller
         $freelancerId = auth()->id();
 
         $request->request->add([
-            'slug' => DevCrudHelper::makeSlug($bid, 'bid-of-'.$job->title),
             'freelancer_id' => $freelancerId,
             'job_id' => $job->id,
-            'job_freelancer' => $job->id.'-'.$freelancerId
         ]);
 
         validateRequest($bid, $request,
             ['job_freelancer' => 'unique:bids'],
-            ['job_freelancer.unique' => 'You have already submitted a bid.'],['status']
+            ['job_freelancer.unique' => 'You have already submitted a bid.'],['status', 'slug']
         );
 
         $membershipData = $this->membership->useMembershipData($freelancerId, 'bids',1);

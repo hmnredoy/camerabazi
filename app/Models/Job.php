@@ -6,6 +6,8 @@ use App\Models\Enums\JobStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
+use TunnelConflux\DevCrud\Helpers\DevCrudHelper;
+use TunnelConflux\DevCrud\Models\DevCrudModel;
 
 class Job extends Model
 {
@@ -15,6 +17,9 @@ class Job extends Model
 
     protected $withCount=['bids'];
 
+    public function scopeActive(){
+        return $this->where('status', JobStatus::Active);
+    }
 
     public function path()
     {
@@ -36,23 +41,15 @@ class Job extends Model
         $this->categories()->save($category);
     }
 
-    public function bidders()
-    {
-        return $this->hasMany(Bid::class,'job_id');
-    }
-
     public function bids()
     {
         return $this->hasMany(Bid::class);
     }
 
-
     public function attachments()
     {
         return $this->morphMany('App\Models\Attachment', 'attachmentable');
     }
-
-
 
     public function addBid($bid)
     {
@@ -72,8 +69,6 @@ class Job extends Model
         $bid->save();
 
     }
-
-
 
     public function  markSucceeded(Bid $bid)
     {
@@ -103,7 +98,7 @@ class Job extends Model
     {
 
         return  $query->where('user_id',auth()->id());
-        
+
     }
 
     public function scopeClientCanceledJobs($query)
@@ -111,21 +106,22 @@ class Job extends Model
 
         return  $query->where('user_id',auth()->id())
                         ->where('status',JobStatus::cancelled);
-        
+
     }
 
     public function scopeFreelancerProposedJobs($query)
     {
 
-        $proposalsQuery = Bid::proposedBid();          
+        $proposalsQuery = Bid::proposedBid();
         return  $proposalsQuery->where('job_id',$this->id);
-                        
-        
+
+
     }
 
-    
-
-    
-
+    public function setTitleAttribute($value)
+    {
+        $this->attributes['title'] = $value;
+        $this->attributes['slug'] =  DevCrudHelper::makeSlug($this, $value);
+    }
 
 }
