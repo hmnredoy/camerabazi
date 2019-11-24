@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Enums\JobStatus;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -22,7 +23,7 @@ class CreateJobsTable extends Migration
             $table->dateTime('expire');
             $table->double('budget');
             $table->text('description');
-            $table->tinyInteger('status')->default(\App\Models\Enums\JobStatus::submitted);
+            $table->tinyInteger('status')->default(JobStatus::Submitted);
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

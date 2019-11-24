@@ -8,9 +8,9 @@ use Illuminate\Http\Request;
 
 class FreelancerController extends Controller
 {
-    public function home(Request $request)
+    public function home()
     {
-
+        $jobs = auth()->user()->jobs()->get();
         return view('freelancer.home',['jobs'=>$jobs]);
     }
 

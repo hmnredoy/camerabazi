@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 use TunnelConflux\DevCrud\Helpers\DevCrudHelper;
 
 
@@ -52,25 +54,11 @@ Route::get('job/{job}/review', 'ReviewController@show')->name('review.show');
 Route::post('job/{job}/review', 'ReviewController@store')->name('review.store');
 
 
-
-
-
-/*Route::namespace("Modules")->middleware('auth')->group(function () {
-
-    DevCrudHelper::setRoutes('user', 'UserController');
-
-});*/
-
-Auth::routes();
-
-Route::get('/', ['middleware' =>'guest', function(){
-    return redirect()->route('login');
-}]);
-
 Route::middleware('guest')->get('/', 'Auth\LoginController@showLoginForm')->name('login');
 Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('login', 'Auth\LoginController@login');
 Route::post('logout', 'Auth\LoginController@logout')->name('logout');
+
 Route::get('/jobs','JobController@index');
 Route::post('/jobs','JobController@store');
 Route::get('/jobs/create','JobController@create');
@@ -81,7 +69,7 @@ Route::get('/search/','JobController@search');
 Route::get('/client/home', 'ClientController@home');
 Route::get('/client/ongoing-jobs', 'ClientController@ongoingJobs');
 Route::get('/client/submitted-jobs', 'ClientController@submittedJobs');
-Route::get('/client/canceleded-jobs', 'ClientController@canceledJobs');
+Route::get('/client/cancelled-jobs', 'ClientController@canceledJobs');
 Route::get('/client/jobs/{job}/proposals', 'ClientController@jobProposal');
 
 Route::get('/freelancer/home', 'FreelancerController@home');
@@ -89,3 +77,5 @@ Route::get('/freelancer/proposed-jobs', 'FreelancerController@proposedJobs');
 Route::get('/freelancer/active-jobs', 'FreelancerController@activeBids');
 Route::get('/freelancer/ongoing-jobs', 'FreelancerController@ongoingBids');
 
+
+//Auth::routes();

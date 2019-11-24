@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Location;
 use Illuminate\Database\Seeder;
 
 use Spatie\Permission\Models\Role;
@@ -43,8 +44,7 @@ class DatabaseSeeder extends Seeder
         $this->call(RoleSeeder::class);
         $this->call(JobSeeder::class);
         $this->call(CategorySeeder::class);
-        $this->call(PackageSeeder::class);
-        factory(\App\Models\Location::class,10)->create();
+        factory(Location::class,10)->create();
         //$this->call(TestSeeder::class);
 
     }

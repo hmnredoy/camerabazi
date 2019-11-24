@@ -26,7 +26,9 @@ class CreateReviewsTable extends Migration
             $table->softDeletes();
 
             $table->unique(['posted_by', 'job_id', 'commenter_job']);
+        });
 
+        Schema::table('reviews', function (Blueprint $table) {
             $table->foreign('posted_on')
                 ->references('id')
                 ->on('users')
@@ -49,8 +51,8 @@ class CreateReviewsTable extends Migration
      */
     public function down()
     {
-        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
-        Schema::dropIfExists('reviews');
-        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+        Schema::enableForeignKeyConstraints();
+        Schema::drop('reviews');
+        Schema::disableForeignKeyConstraints();
     }
 }
