@@ -1,17 +1,23 @@
 <?php
-/**
- * Project      : Loreal TMR Automation
- * File Name    : AppModel.php
- * Author       : Abu Bakar Siddique
- * Email        : absiddique.live@gmail.com
- * Date[Y/M/D]  : 2019/07/22 1:12 PM
- */
 
 namespace App\Models;
 
+use Illuminate\Auth\Authenticatable;
+use Illuminate\Auth\MustVerifyEmail;
+use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Foundation\Auth\Access\Authorizable;
 use TunnelConflux\DevCrud\Models\DevCrudModel;
 
-class AppModel extends DevCrudModel
+class AppModel extends DevCrudModel implements
+    AuthenticatableContract,
+    AuthorizableContract,
+    CanResetPasswordContract
+{
+    use Authenticatable, Authorizable, CanResetPassword, MustVerifyEmail;
+}
 {
 
 }

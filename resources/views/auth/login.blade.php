@@ -26,26 +26,24 @@
                         {{--<div class="logo-part">
                             <img src="{{url('images/pragati-logo.png')}}" alt="Logo">
                         </div>--}}
-                        <form class="login-form" method="POST" action="{{ route('login') }}">
+                        <form class="login-form" method="POST" action="/login">
                             @csrf
                             <div class="login-form-part">
-                                {{--                                <h1>Welcome to Pragati</h1>--}}
-                                <div class="logo-part">
-                                    <img src="{{url('images/pragati-logo.png')}}" alt="Logo">
-                                </div>
                                 <p>Please login to your account.</p>
                                 <div class="form-group custom-form-group">
-                                    <label>Email</label>
+                                    <label>Email Or Mobile</label>
                                     <div class="input-group custom-input-group">
                                         {{--                                            <input type="text" class="form-control custom-form-control" id="user_name">--}}
-                                        <input id="email" type="email" class="form-control custom-form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                                        <input id="login" type="text"
+                                               class="form-control"
+                                               name="login" value="{{ old('email') ?: old('mobile') }}" required autofocus>
+                                        @if ($errors->has('email') || $errors->has('mobile'))
+                                            <span class="invalid-feedback">
+                                        <strong>{{ $errors->first('email') ?: $errors->first('mobile') }}</strong>
+                                        </span>
+                                        @endif
                                     </div>
 
-                                    @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
                                 </div>
 
                                 <div class="form-group custom-form-group">
@@ -66,6 +64,14 @@
                                         <strong>{{ $message }}</strong>
                                         </span>
                                     @enderror
+                                </div>
+                                <div class="form-group custom-form-group">
+                                    <div class="col-md-6 offset-md-4">
+                                      <a href="/register?type=freelancer">Looking For Job</a>
+                                    </div>
+                                    <div class="col-md-6 offset-md-4">
+                                        <a href="/register?type=client">Looking For Freelancer</a>
+                                    </div>
                                 </div>
 
                                 <div class="form-group custom-form-group">
@@ -89,6 +95,30 @@
                     </div>
                 </div>
             </div>
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+            <div class="row">
+                @foreach($jobs as $job)
+                    <h2>{{$job->title}} </h2>
+                    <a href="{{$job->path()}}/bid">Bid Now</a>
+                    {{ $job->expire->diffForHumans(null, true) }}
+                    <ul>
+                        @foreach($job->categories as $cat)
+                        <li>
+                        {{$cat->name}}
+                        </li>
+                        @endforeach
+                    </ul>
+                @endforeach
+            </div>
+            {{ $jobs->links() }}
         </div>
     </div>
 </section>

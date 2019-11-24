@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Models\Location;
+use App\Models\Profile;
 use App\Models\User;
 use App\Http\Controllers\Controller;
+use App\Models\Role;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -48,10 +53,18 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
+
+
+
+
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
+
+            'name' => ['required', 'string'],
+            'mobile' => 'required',
+            'location' => 'required',
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'role' => 'required'
         ]);
     }
 
@@ -63,10 +76,102 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+
+        $role = Role::find($data['role']);
+
+
+
+        $user = User::make([
+
             'name' => $data['name'],
+            'mobile' => $data['mobile'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+
+
+
+        $role->users()->save($user);
+
+        \DB::table('user_location')->insert(
+            ['user_id' => $user->id,'location_id' =>$data['location'] ]
+        );
+
+
+
+
+
+        return $user;
+    }
+
+    /**
+     * Show the application registration form.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function showRegistrationForm(Request $request)
+    {
+        if(!$type = $request->has('type')){
+           return redirect('/login');
+        }
+
+        $type = $request->get('type');
+        $role = Role::where('name',$type)->firstOrFail();
+
+        $locations = Location::all();
+
+
+
+        return view('auth.register',['role'=> $role,'locations'=> $locations]);
+    }
+
+    /**
+     * Handle a registration request for the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function register(Request $request)
+    {
+
+
+        $this->validator($request->all())->validate();
+
+        event(new Registered($user = $this->create($request->all())));
+
+
+        $this->guard()->login($user);
+
+        return $this->registered($request, $user)
+            ?: redirect($this->redirectPath($user));
+    }
+
+    /**
+     * Get the post register / login redirect path.
+     *
+     * @param $user
+     * @return string
+     */
+    public function redirectPath($user)
+    {
+        if (method_exists($this, 'redirectTo')) {
+            return $this->redirectTo($user);
+        }
+
+        return property_exists($this, 'redirectTo') ? $this->redirectTo : '/home';
+    }
+
+    /**
+     * Get the post register / login redirect path.
+     *
+     * @param $user
+     * @return string
+     */
+    public function redirectTo($user)
+    {
+       if($user->role->name === 'freelancer'){ return '/freelancer/home'; }
+       if($user->role->name === 'client'){ return '/client/home'; }
+       return '/';
     }
 }
