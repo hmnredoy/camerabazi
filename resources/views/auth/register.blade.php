@@ -115,7 +115,7 @@
                             @csrf
                             <div class="row form-group custom-form-group">
                                 <div class="col">
-                                    <input type="text" name="username"  value="{{ old('username')}}" class="form-control custom-form-control" placeholder="User name">
+                                    <input type="text" name="name"  value="{{ old('username')}}" class="form-control custom-form-control" placeholder="User name">
                                     <div class="invalid-feedback">
                                         Please choose an emailaddress.
                                     </div>
@@ -137,6 +137,12 @@
                                     Please choose an emailaddress.
                                 </div>
                             </div>
+                            <select  name="location" class="custom-select">
+                                <option selected>Open this select menu</option>
+                               @foreach($locations as $location)
+                                    <option value="{{$location->id}}">{{$location->title}}</option>
+                               @endforeach
+                            </select>
 
                             <div class="form-group custom-form-group">
                                 <input type="password" name="password" class="form-control custom-form-control" id="password" placeholder="Password">

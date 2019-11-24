@@ -3,7 +3,9 @@
 namespace App\Models;
 
 
+use App\Models\Enums\JobStatus;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -85,12 +87,26 @@ class User extends AppModel
             : 'N\A';
     }
 
+
     public function memberships(){
         return $this->hasMany(MembershipPurchase::class, 'freelancer_id', 'id');
     }
 
     public function ratings(){
         return $this->hasMany(Rating::class, 'user_id');
+    }
+    public function getCanceledJobs()
+    {
+        $jobs  = new Collection();
+
+        $this->bids->each(function($bid) use ($jobs) {
+            if($bid->job->status == JobStatus::cancelled ){
+                $jobs->push($bid->job);
+            }
+        });
+
+
+        return $jobs;
     }
 
     public function reviews(){
@@ -99,6 +115,23 @@ class User extends AppModel
 
     public function account(){
         return $this->hasOne(Account::class);
+    }
+    // belows are client related methods
+
+    public function getOngoingJobs()
+    {
+        $ongoingJobs  = new Collection();
+
+        $this->jobs->each(function($job) use ($ongoingJobs) {
+
+            if(!(\Carbon\Carbon::now()->greaterThan($job->expire))  && $job->status != JobStatus::blocked){
+                    $ongoingJobs->push($job);
+            }
+        });
+
+        
+
+        return $ongoingJobs;
     }
 
     public function getAccountInfoAttribute(){

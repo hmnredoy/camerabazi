@@ -23,6 +23,13 @@ class LoginController extends Controller
     use AuthenticatesUsers;
 
     /**
+     * Login username to be used by the controller.
+     *
+     * @var string
+     */
+    protected $username;
+
+    /**
      * Where to redirect users after login.
      *
      * @var string
@@ -37,6 +44,24 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+        $this->username = $this->findUsername();
+    }
+
+    /**
+     * Get the login username to be used by the controller.
+     *
+     * @return string
+     */
+    public function findUsername()
+    {
+        $login = request()->input('login');
+
+        $fieldType = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'mobile';
+
+        request()->merge([$fieldType => $login]);
+
+
+        return $fieldType;
     }
 
     protected function loggedOut()
@@ -132,7 +157,7 @@ class LoginController extends Controller
      */
     public function username()
     {
-        return 'username';
+        return $this->username;
     }
 
     /**
@@ -151,6 +176,17 @@ class LoginController extends Controller
     }
 
     /**
+     * Get the needed authorization credentials from the request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    protected function credentials(Request $request)
+    {
+        return $request->only($this->username(), 'password');
+    }
+
+    /**
      * Get the post register / login redirect path.
      *
      * @param $user
@@ -162,5 +198,7 @@ class LoginController extends Controller
         if($user->role->name === 'client'){ return '/client/home'; }
         return '/';
     }
+
+
 
 }

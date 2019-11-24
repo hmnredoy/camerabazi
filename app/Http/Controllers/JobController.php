@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Job;
 use App\Models\Location;
+use App\Models\Enums\JobStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use TunnelConflux\DevCrud\Helpers\DevCrudHelper;
@@ -19,7 +20,7 @@ class JobController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+       // $this->middleware('auth');
 
 
     }
@@ -124,6 +125,38 @@ class JobController extends Controller
         //
     }
 
+    public function search(Request $request)
+    {
 
 
+        $jobs = $this->getJobs($request);
+        return view('jobs.search',['jobs'=>$jobs]);
+    }
+
+    public function getJobs($request)
+    {
+
+        $query = Job::limit(10);
+
+        if($request->has('location')){
+            $location= $request->get('location');
+            $query->where('location_id','=',$location);
+        }
+
+
+
+
+
+
+        dd($query->get());
+
+        return $query->get();
+
+    }
+
+    public function cancel(Job $job)
+    {
+        $job->status = JobStatus::cancelled;
+        $job->save();
+    }
 }

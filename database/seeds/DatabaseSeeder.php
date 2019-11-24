@@ -43,7 +43,9 @@ class DatabaseSeeder extends Seeder
         $this->call(RoleSeeder::class);
         $this->call(JobSeeder::class);
         $this->call(CategorySeeder::class);
-        $this->call(TestSeeder::class);
+        $this->call(PackageSeeder::class);
+        factory(\App\Models\Location::class,10)->create();
+        //$this->call(TestSeeder::class);
 
     }
 }

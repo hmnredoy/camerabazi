@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Models\Location;
 use App\Models\Profile;
 use App\Models\User;
 use App\Http\Controllers\Controller;
@@ -58,8 +59,9 @@ class RegisterController extends Controller
 
         return Validator::make($data, [
 
-            'username' => ['required', 'string', 'unique:users'],
+            'name' => ['required', 'string'],
             'mobile' => 'required',
+            'location' => 'required',
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'role' => 'required'
@@ -81,7 +83,7 @@ class RegisterController extends Controller
 
         $user = User::make([
 
-            'username' => $data['username'],
+            'name' => $data['name'],
             'mobile' => $data['mobile'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
@@ -90,6 +92,10 @@ class RegisterController extends Controller
 
 
         $role->users()->save($user);
+
+        \DB::table('user_location')->insert(
+            ['user_id' => $user->id,'location_id' =>$data['location'] ]
+        );
 
 
 
@@ -113,9 +119,11 @@ class RegisterController extends Controller
         $type = $request->get('type');
         $role = Role::where('name',$type)->firstOrFail();
 
+        $locations = Location::all();
 
 
-        return view('auth.register',['role'=> $role]);
+
+        return view('auth.register',['role'=> $role,'locations'=> $locations]);
     }
 
     /**
@@ -131,6 +139,7 @@ class RegisterController extends Controller
         $this->validator($request->all())->validate();
 
         event(new Registered($user = $this->create($request->all())));
+
 
         $this->guard()->login($user);
 

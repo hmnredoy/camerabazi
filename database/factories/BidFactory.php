@@ -16,5 +16,6 @@ $factory->define(Bid::class, function (Faker $faker) {
         'job_id' => function(){
             return factory(\App\Models\Job::class)->create()->id;
         },
+        'is_accepted'=>false,
     ];
 });

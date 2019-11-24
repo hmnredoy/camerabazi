@@ -17,8 +17,20 @@ class Bid extends Model
     {
         return $this->belongsTo(Job::class);
     }
-    public function freelancer(){
-        return $this->hasOne(User::class, 'id', 'freelancer_id');
+        public function user()
+    {
+        return $this->belongsTo(User::class);
     }
+
+	public function freelancer(){
+        return $this->belongsTo(User::class, 'id', 'freelancer_id');
+    }
+
+
+    public function scopeProposedBid($query)
+    {
+        return $query->where('freelancer_id',auth()->id());   
+    }
+
 
 }

@@ -22,7 +22,7 @@ class CreateJobsTable extends Migration
             $table->dateTime('expire');
             $table->double('budget');
             $table->text('description');
-            $table->tinyInteger('status')->default(1);
+            $table->tinyInteger('status')->default(\App\Models\Enums\JobStatus::submitted);
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

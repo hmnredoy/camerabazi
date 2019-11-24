@@ -20,10 +20,17 @@ class ClientController extends Controller
 
     }
 
-    public function myJobs()
+    public function submittedJobs()
     {
-        $jobs = auth()->user()->jobs;
-        return view('client.myjobs',['jobs'=>$jobs]);
+        //$jobs = auth()->user()->jobs;
+        $submittedJobs = Job::clientSubmittedJobs()->latest()->get();
+        return view('client.myjobs',['jobs'=>$submittedJobs]);
+    }
+
+    public function canceledJobs()
+    {
+        $canceledJobs = Job::clientCanceledJobs()->latest()->get();
+        return view('client.myjobs',['jobs'=>$canceledJobs]);   
     }
 
     public function jobBid(Job $job)
@@ -40,6 +47,12 @@ class ClientController extends Controller
         foreach ($bids as $bid){
             dd($bid, $bid->attachments, $bid->freelancer, $bid->freelancer->rating);
         }
+    }
+
+    public function ongoingJobs()
+    {
+        $jobs = auth()->user()->getOngoingJobs();
+        return view('client.ongoing-jobs',['jobs'=>$jobs]);
     }
 
 

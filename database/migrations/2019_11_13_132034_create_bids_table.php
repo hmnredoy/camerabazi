@@ -23,6 +23,7 @@ class CreateBidsTable extends Migration
             $table->string('delivery_days');
             $table->text('description');
             $table->tinyInteger('status')->default(1);
+            $table->boolean('is_accepted')->default(false);
             $table->timestamps();
 
             $table->unique(['job_id','freelancer_id', 'job_freelancer']);

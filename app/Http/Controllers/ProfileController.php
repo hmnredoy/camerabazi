@@ -15,6 +15,7 @@ use App\Models\User;
 use App\Repositories\MembershipPurchaseRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use ReflectionClass;
 
 class ProfileController extends Controller
@@ -120,10 +121,39 @@ class ProfileController extends Controller
         dd($profileData);
     }
 
-    /*    public function changePassword(Request $request, User $user){
-            $data = $request->all();
-            dd($request, $user);
-        }*/
+
+    public function showchangePassword()
+    {
+        return view('freelancer.change-password');
+    }
+    public function changePassword(Request $request)
+    {
+
+        $user = auth()->user();
+
+        $request->validate([
+                'old_password' => 'required',
+                'password' => 'required|min:6|confirmed',
+            ]
+        );
+
+        $data = $request->all();
+
+
+        if (!Hash::check($data['old_password'], $user->password)) {
+            return back()->with('error', 'The specified password does not match the database password');
+        } else {
+            // write code to update password
+
+            $user->update([
+                'password' => $request->password,
+            ]);
+            return redirect('profile/change-password');
+        }
+    }
+
+
+
 
 
 }
