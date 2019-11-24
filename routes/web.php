@@ -19,6 +19,7 @@ Route::middleware('auth')->group(function () {
 
 
 Route::get('freelancer/dashboard', 'DashboardController@freelancer')->name('freelancer.dashboard');
+Route::get('client/dashboard', 'DashboardController@client')->name('client.dashboard');
 
 Route::get('client/offer/{bid}', 'ClientOfferController@index')->name('client.offer.index');
 Route::post('client/offer/{bid}', 'ClientOfferController@store')->name('client.offer.store');

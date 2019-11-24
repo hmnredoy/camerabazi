@@ -6,11 +6,11 @@ use TunnelConflux\DevCrud\Models\Enums\Enum;
 
 class JobStatus extends Enum
 {
-    const active    = 1;
-    const submitted = 2;
-    const cancelled = 3;
-    const succeeded = 4;
-    const ongoing   = 5;
-    const ended     = 6;
-    const blocked   = 7;
+    const Active    = 1;
+    const Submitted = 2;
+    const Cancelled = 3;
+    const Succeeded = 4;
+    const Ongoing   = 5;
+    const Ended     = 6;
+    const Blocked   = 7;
 }
